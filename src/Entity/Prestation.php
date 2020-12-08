@@ -45,12 +45,18 @@ class Prestation
      * @ORM\OneToMany(targetEntity=PrestationStatut::class, mappedBy="prestation")
      */
     private $statut;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="prestation")
+     */
+    private $users;
     
 
     public function __construct()
     {
         $this->type = new ArrayCollection();
         $this->statut = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -149,6 +155,33 @@ class Prestation
             if ($statut->getPrestation() === $this) {
                 $statut->setPrestation(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
+    {
+        return $this->users;
+    }
+
+    public function addUser(User $user): self
+    {
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removePrestation($this);
         }
 
         return $this;

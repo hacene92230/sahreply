@@ -22,38 +22,6 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create("FR-fr");
-        //creation des statuts possible
-        for ($i = 0; $i < 3; $i++) {
-            $statut = new PrestationStatut();
-            if ($i == 0)
-                $statut->setNom("en attente d'acceptation");
-            else if ($i == 1)
-                $statut->setNom("en cours de réalisation");
-            else if ($i == 2)
-                $statut->setNom("terminé");
-            $manager->persist($statut);
-        }
-
-        //Création des types de prestation
-        for ($i = 0; $i <= 4; $i++) {
-            $type = new PrestationType();
-            if ($i == 0)
-                $type->setNom("ménage")
-                    ->setTarif(10);
-            elseif ($i == 1)
-                $type->setNom("course")
-                    ->setTarif(8);
-            else if ($i == 2)
-                $type->setNom("cuisine")
-                    ->setTarif(13);
-            else if ($i == 3)
-                $type->setNom("garde d'enfant")
-                    ->setTarif(9);
-            else if ($i == 4)
-                $type->setNom("déménagement")
-                    ->setTarif(16);
-            $manager->persist($type);
-        }
 
         //création des prestations
         for ($i = 0; $i < 300; $i++) {
@@ -62,7 +30,42 @@ class AppFixtures extends Fixture
                 ->setNbheure($faker->numberBetween(1, 11))
                 ->addStatut(new PrestationStatut())
                 ->addType(new PrestationType());
-            $manager->persist($statut);
+            $manager->persist($prestation);
+
+            //Création des types de prestation
+            for ($j = 0; $j <= 4; $j++) {
+                $type = new PrestationType();
+                if ($i == 0)
+                    $type->setNom("ménage")
+                        ->setTarif(10);
+                elseif ($i == 1)
+                    $type->setNom("course")
+                        ->setTarif(8);
+                else if ($i == 2)
+                    $type->setNom("cuisine")
+                        ->setTarif(13);
+                else if ($i == 3)
+                    $type->setNom("garde d'enfant")
+                        ->setTarif(9);
+                else if ($i == 4)
+                    $type->setNom("déménagement")
+                        ->setTarif(16);
+                $type->setPrestation($prestation);
+                $manager->persist($type);
+            }
+
+            //creation des statuts
+            for ($k = 0; $k < 3; $k++) {
+                $statut = new PrestationStatut();
+                if ($i == 0)
+                    $statut->setNom("en attente d'acceptation");
+                else if ($i == 1)
+                    $statut->setNom("en cours de réalisation");
+                else if ($i == 2)
+                    $statut->setNom("terminé");
+                $statut->setPrestation($prestation); 
+                $manager->persist($statut);
+            }
         }
 
         //Création des users

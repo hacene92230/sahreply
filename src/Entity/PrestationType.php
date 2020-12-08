@@ -20,26 +20,32 @@ class PrestationType
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private $nom;
 
     /**
      * @ORM\Column(type="integer")
      */
     private $tarif;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Prestation::class, inversedBy="type")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $prestation;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getType(): ?string
+    public function getNom(): ?string
     {
-        return $this->type;
+        return $this->nom;
     }
 
-    public function setType(string $type): self
+    public function setNom(string $nom): self
     {
-        $this->type = $type;
+        $this->nom = $nom;
 
         return $this;
     }
@@ -52,6 +58,18 @@ class PrestationType
     public function setTarif(int $tarif): self
     {
         $this->tarif = $tarif;
+
+        return $this;
+    }
+
+    public function getPrestation(): ?Prestation
+    {
+        return $this->prestation;
+    }
+
+    public function setPrestation(?Prestation $prestation): self
+    {
+        $this->prestation = $prestation;
 
         return $this;
     }

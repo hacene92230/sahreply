@@ -22,6 +22,12 @@ class PrestationStatut
      */
     private $nom;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Prestation::class, inversedBy="statut")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $prestation;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +41,18 @@ class PrestationStatut
     public function setNom(string $nom): self
     {
         $this->nom = $nom;
+
+        return $this;
+    }
+
+    public function getPrestation(): ?Prestation
+    {
+        return $this->prestation;
+    }
+
+    public function setPrestation(?Prestation $prestation): self
+    {
+        $this->prestation = $prestation;
 
         return $this;
     }

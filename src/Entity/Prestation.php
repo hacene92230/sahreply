@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PrestationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,16 +37,21 @@ class Prestation
     private $user;
 
     /**
-     * @ORM\OneToOne(targetEntity=PrestationStatut::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $statut;
-
-    /**
-     * @ORM\OneToOne(targetEntity=PrestationType::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=PrestationType::class, mappedBy="prestation")
      */
     private $type;
+
+    /**
+     * @ORM\OneToMany(targetEntity=PrestationStatut::class, mappedBy="prestation")
+     */
+    private $statut;
+    
+
+    public function __construct()
+    {
+        $this->type = new ArrayCollection();
+        $this->statut = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -87,26 +94,62 @@ class Prestation
         return $this;
     }
 
-    public function getStatut(): ?PrestationStatut
-    {
-        return $this->statut;
-    }
-
-    public function setStatut(PrestationStatut $statut): self
-    {
-        $this->statut = $statut;
-
-        return $this;
-    }
-
-    public function getType(): ?PrestationType
+    /**
+     * @return Collection|PrestationType[]
+     */
+    public function getType(): Collection
     {
         return $this->type;
     }
 
-    public function setType(PrestationType $type): self
+    public function addType(PrestationType $type): self
     {
-        $this->type = $type;
+        if (!$this->type->contains($type)) {
+            $this->type[] = $type;
+            $type->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeType(PrestationType $type): self
+    {
+        if ($this->type->removeElement($type)) {
+            // set the owning side to null (unless already changed)
+            if ($type->getPrestation() === $this) {
+                $type->setPrestation(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|PrestationStatut[]
+     */
+    public function getStatut(): Collection
+    {
+        return $this->statut;
+    }
+
+    public function addStatut(PrestationStatut $statut): self
+    {
+        if (!$this->statut->contains($statut)) {
+            $this->statut[] = $statut;
+            $statut->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeStatut(PrestationStatut $statut): self
+    {
+        if ($this->statut->removeElement($statut)) {
+            // set the owning side to null (unless already changed)
+            if ($statut->getPrestation() === $this) {
+                $statut->setPrestation(null);
+            }
+        }
 
         return $this;
     }

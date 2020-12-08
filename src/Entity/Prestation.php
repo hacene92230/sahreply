@@ -27,10 +27,24 @@ class Prestation
      */
     private $nbheure;
 
+    /*
+
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="prestation")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToOne(targetEntity=PrestationStatut::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
     private $statut;
+
+    /**
+     * @ORM\OneToOne(targetEntity=PrestationType::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $type;
 
     public function getId(): ?int
     {
@@ -61,14 +75,38 @@ class Prestation
         return $this;
     }
 
-    public function getStatut(): ?bool
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    public function getStatut(): ?PrestationStatut
     {
         return $this->statut;
     }
 
-    public function setStatut(bool $statut): self
+    public function setStatut(PrestationStatut $statut): self
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getType(): ?PrestationType
+    {
+        return $this->type;
+    }
+
+    public function setType(PrestationType $type): self
+    {
+        $this->type = $type;
 
         return $this;
     }

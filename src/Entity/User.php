@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -72,6 +74,16 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     private $phone;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Prestation::class, mappedBy="user")
+     */
+    private $prestation;
+
+    public function __construct()
+    {
+        $this->prestation = new ArrayCollection();
+    }
     /**
 
      /**
@@ -245,6 +257,36 @@ class User implements UserInterface
     public function setPhone(int $phone): self
     {
         $this->phone = $phone;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Prestation[]
+     */
+    public function getPrestation(): Collection
+    {
+        return $this->prestation;
+    }
+
+    public function addPrestation(Prestation $prestation): self
+    {
+        if (!$this->prestation->contains($prestation)) {
+            $this->prestation[] = $prestation;
+            $prestation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Prestation $prestation): self
+    {
+        if ($this->prestation->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getUser() === $this) {
+                $prestation->setUser(null);
+            }
+        }
 
         return $this;
     }

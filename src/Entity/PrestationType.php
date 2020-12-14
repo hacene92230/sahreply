@@ -30,7 +30,7 @@ class PrestationType
     private $tarif;
 
     /**
-     * @ORM\OneToMany(targetEntity=Prestation::class, mappedBy="type")
+     * @ORM\OneToMany(targetEntity=Prestation::class, mappedBy="type", cascade={"persist", "remove"})
      */
     private $prestations;
 

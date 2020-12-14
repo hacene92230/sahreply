@@ -35,7 +35,7 @@ class Prestation
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PrestationType::class, inversedBy="prestations")
+     * @ORM\ManyToOne(targetEntity=PrestationType::class, inversedBy="prestations", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;

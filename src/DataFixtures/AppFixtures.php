@@ -12,6 +12,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 class AppFixtures extends Fixture
 {
     private $encoder;
@@ -24,16 +25,6 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create("FR-fr");
-
-        //création des prestations
-        for ($i = 0; $i < 300; $i++) {
-            $prestation = new \App\Entity\Prestation();
-            $prestation->setCreatedAt(new \DateTime())
-                ->setNbheure($faker->numberBetween(1, 11))
-                ->setStatut(new PrestationStatut())
-                ->setType(new PrestationType());
-            $manager->persist($prestation);
-        }
 
         //Création des types de prestation
         for ($j = 0; $j <= 4; $j++) {
@@ -53,9 +44,9 @@ class AppFixtures extends Fixture
             elseif ($j == 4)
                 $type->setNom("déménagement")
                     ->setTarif(16);
-            $type->addPrestation($prestation);
             $manager->persist($type);
         }
+
 
         //creation des statuts
         for ($k = 0; $k < 3; $k++) {
@@ -65,9 +56,18 @@ class AppFixtures extends Fixture
             else if ($k == 1)
                 $statut->setNom("en cours de réalisation");
             else if ($k == 2)
-                $statut->setNom("terminé");
-            $statut->addPrestation($prestation);
+                $statut->setNom("terminé");;
             $manager->persist($statut);
+        }
+
+        //création des prestations
+        for ($i = 0; $i < 300; $i++) {
+            $prestation = new \App\Entity\Prestation();
+            $prestation->setCreatedAt(new \DateTime())
+                ->setNbheure($faker->numberBetween(1, 11))
+                ->setStatut(new PrestationStatut())
+                ->setType(new PrestationType());
+            $manager->persist($prestation);
         }
 
         //Création des users

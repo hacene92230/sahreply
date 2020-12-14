@@ -3,14 +3,15 @@
 namespace App\DataFixtures;
 
 use Faker\Factory;
+use App\Entity\User;
+use App\Entity\Prestation;
 use App\Entity\PrestationType;
 use App\Entity\PrestationStatut;
-use App\Entity\Prestation;
-use App\Entity\User;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
 class AppFixtures extends Fixture
 {
     private $encoder;
@@ -19,6 +20,7 @@ class AppFixtures extends Fixture
     {
         $this->encoder = $encoder;
     }
+
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create("FR-fr");
@@ -28,49 +30,49 @@ class AppFixtures extends Fixture
             $prestation = new \App\Entity\Prestation();
             $prestation->setCreatedAt(new \DateTime())
                 ->setNbheure($faker->numberBetween(1, 11))
-                ->addStatut(new PrestationStatut())
-                ->addType(new PrestationType());
+                ->setStatut(new PrestationStatut())
+                ->setType(new PrestationType());
             $manager->persist($prestation);
+        }
 
-            //Création des types de prestation
-            for ($j = 0; $j <= 4; $j++) {
-                $type = new PrestationType();
-                if ($i == 0)
-                    $type->setNom("ménage")
-                        ->setTarif(10);
-                elseif ($i == 1)
-                    $type->setNom("course")
-                        ->setTarif(8);
-                else if ($i == 2)
-                    $type->setNom("cuisine")
-                        ->setTarif(13);
-                else if ($i == 3)
-                    $type->setNom("garde d'enfant")
-                        ->setTarif(9);
-                else if ($i == 4)
-                    $type->setNom("déménagement")
-                        ->setTarif(16);
-                $type->setPrestation($prestation);
-                $manager->persist($type);
-            }
+        //Création des types de prestation
+        for ($j = 0; $j <= 4; $j++) {
+            $type = new \App\Entity\PrestationType();
+            if ($j == 0)
+                $type->setNom("ménage")
+                    ->setTarif(10);
+            elseif ($j == 1)
+                $type->setNom("course")
+                    ->setTarif(8);
+            elseif ($j == 2)
+                $type->setNom("cuisine")
+                    ->setTarif(13);
+            elseif ($j == 3)
+                $type->setNom("garde d'enfant")
+                    ->setTarif(9);
+            elseif ($j == 4)
+                $type->setNom("déménagement")
+                    ->setTarif(16);
+            $type->addPrestation($prestation);
+            $manager->persist($type);
+        }
 
-            //creation des statuts
-            for ($k = 0; $k < 3; $k++) {
-                $statut = new PrestationStatut();
-                if ($i == 0)
-                    $statut->setNom("en attente d'acceptation");
-                else if ($i == 1)
-                    $statut->setNom("en cours de réalisation");
-                else if ($i == 2)
-                    $statut->setNom("terminé");
-                $statut->setPrestation($prestation); 
-                $manager->persist($statut);
-            }
+        //creation des statuts
+        for ($k = 0; $k < 3; $k++) {
+            $statut = new \App\Entity\PrestationStatut();
+            if ($k == 0)
+                $statut->setNom("en attente d'acceptation");
+            else if ($k == 1)
+                $statut->setNom("en cours de réalisation");
+            else if ($k == 2)
+                $statut->setNom("terminé");
+            $statut->addPrestation($prestation);
+            $manager->persist($statut);
         }
 
         //Création des users
         for ($i = 0; $i < 30; $i++) {
-            $user = new \App\Entity\User();
+            $user = new User();
             $user->setFirstName($faker->firstName)
                 ->setLastName($faker->lastName)
                 ->setAddress($faker->address)
@@ -90,5 +92,10 @@ class AppFixtures extends Fixture
         }
 
         $manager->flush();
+    }
+
+    public function getDependencies()
+    {
+        return array(UserFixtures::class);
     }
 }

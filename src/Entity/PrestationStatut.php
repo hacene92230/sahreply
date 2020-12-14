@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StatutRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -23,10 +25,15 @@ class PrestationStatut
     private $nom;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Prestation::class, inversedBy="statut")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Prestation::class, mappedBy="statut")
      */
-    private $prestation;
+    private $prestations;
+
+    public function __construct()
+    {
+        $this->prestations = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -45,14 +52,32 @@ class PrestationStatut
         return $this;
     }
 
-    public function getPrestation(): ?Prestation
+    /**
+     * @return Collection|Prestation[]
+     */
+    public function getPrestations(): Collection
     {
-        return $this->prestation;
+        return $this->prestations;
     }
 
-    public function setPrestation(?Prestation $prestation): self
+    public function addPrestation(Prestation $prestation): self
     {
-        $this->prestation = $prestation;
+        if (!$this->prestations->contains($prestation)) {
+            $this->prestations[] = $prestation;
+            $prestation->setStatut($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Prestation $prestation): self
+    {
+        if ($this->prestations->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getStatut() === $this) {
+                $prestation->setStatut(null);
+            }
+        }
 
         return $this;
     }

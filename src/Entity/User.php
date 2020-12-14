@@ -76,7 +76,7 @@ class User implements UserInterface
     private $phone;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Prestation::class, inversedBy="users")
+     * @ORM\OneToMany(targetEntity=Prestation::class, mappedBy="user")
      */
     private $prestation;
 
@@ -84,8 +84,8 @@ class User implements UserInterface
     {
         $this->prestation = new ArrayCollection();
     }
-    /**
 
+/**
      /**
      * perrmet d'initialiser un slug
      * @ORM\PrePersist
@@ -100,8 +100,7 @@ class User implements UserInterface
         }
     }
 
-
-    public function getId(): ?int
+        public function getId(): ?int
     {
         return $this->id;
     }
@@ -258,8 +257,10 @@ class User implements UserInterface
     {
         $this->phone = $phone;
 
+
         return $this;
     }
+
 
     /**
      * @return Collection|Prestation[]
@@ -273,6 +274,7 @@ class User implements UserInterface
     {
         if (!$this->prestation->contains($prestation)) {
             $this->prestation[] = $prestation;
+            $prestation->setUser($this);
         }
 
         return $this;
@@ -280,7 +282,12 @@ class User implements UserInterface
 
     public function removePrestation(Prestation $prestation): self
     {
-        $this->prestation->removeElement($prestation);
+        if ($this->prestation->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getUser() === $this) {
+                $prestation->setUser(null);
+            }
+        }
 
         return $this;
     }

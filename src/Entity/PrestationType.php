@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PrestationTypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,10 +30,15 @@ class PrestationType
     private $tarif;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Prestation::class, inversedBy="type")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\OneToMany(targetEntity=Prestation::class, mappedBy="type")
      */
-    private $prestation;
+    private $prestations;
+
+    public function __construct()
+    {
+        $this->prestations = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -62,14 +69,32 @@ class PrestationType
         return $this;
     }
 
-    public function getPrestation(): ?Prestation
+    /**
+     * @return Collection|Prestation[]
+     */
+    public function getPrestations(): Collection
     {
-        return $this->prestation;
+        return $this->prestations;
     }
 
-    public function setPrestation(?Prestation $prestation): self
+    public function addPrestation(Prestation $prestation): self
     {
-        $this->prestation = $prestation;
+        if (!$this->prestations->contains($prestation)) {
+            $this->prestations[] = $prestation;
+            $prestation->setType($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestation(Prestation $prestation): self
+    {
+        if ($this->prestations->removeElement($prestation)) {
+            // set the owning side to null (unless already changed)
+            if ($prestation->getType() === $this) {
+                $prestation->setType(null);
+            }
+        }
 
         return $this;
     }

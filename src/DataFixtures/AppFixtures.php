@@ -26,28 +26,6 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create("FR-fr");
 
-        //Création des types de prestation
-        for ($j = 0; $j <= 4; $j++) {
-            $type = new \App\Entity\PrestationType();
-            if ($j == 0)
-                $type->setNom("ménage")
-                    ->setTarif(10);
-            elseif ($j == 1)
-                $type->setNom("course")
-                    ->setTarif(8);
-            elseif ($j == 2)
-                $type->setNom("cuisine")
-                    ->setTarif(13);
-            elseif ($j == 3)
-                $type->setNom("garde d'enfant")
-                    ->setTarif(9);
-            elseif ($j == 4)
-                $type->setNom("déménagement")
-                    ->setTarif(16);
-            $manager->persist($type);
-        }
-
-
         //creation des statuts
         for ($k = 0; $k < 3; $k++) {
             $statut = new \App\Entity\PrestationStatut();
@@ -58,16 +36,39 @@ class AppFixtures extends Fixture
             else if ($k == 2)
                 $statut->setNom("terminé");;
             $manager->persist($statut);
-        }
 
-        //création des prestations
-        for ($i = 0; $i < 300; $i++) {
-            $prestation = new \App\Entity\Prestation();
-            $prestation->setCreatedAt(new \DateTime())
-                ->setNbheure($faker->numberBetween(1, 11))
-                ->setStatut(new PrestationStatut())
-                ->setType(new PrestationType());
-            $manager->persist($prestation);
+
+            //Création des types de prestation
+            for ($j = 0; $j <= 4; $j++) {
+                $type = new \App\Entity\PrestationType();
+                if ($j == 0)
+                    $type->setNom("ménage")
+                        ->setTarif(10);
+                elseif ($j == 1)
+                    $type->setNom("course")
+                        ->setTarif(8);
+                elseif ($j == 2)
+                    $type->setNom("cuisine")
+                        ->setTarif(13);
+                elseif ($j == 3)
+                    $type->setNom("garde d'enfant")
+                        ->setTarif(9);
+                elseif ($j == 4)
+                    $type->setNom("déménagement")
+                        ->setTarif(16);
+                $manager->persist($type);
+
+
+                //création des prestations
+                for ($i = 0; $i < 300; $i++) {
+                    $prestation = new \App\Entity\Prestation();
+                    $prestation->setCreatedAt(new \DateTime())
+                        ->setNbheure($faker->numberBetween(1, 11))
+                        ->setStatut($statut)
+                        ->setType($type);
+                    $manager->persist($prestation);
+                }
+            }
         }
 
         //Création des users
@@ -90,12 +91,6 @@ class AppFixtures extends Fixture
             }
             $manager->persist($user);
         }
-
         $manager->flush();
-    }
-
-    public function getDependencies()
-    {
-        return array(UserFixtures::class);
     }
 }

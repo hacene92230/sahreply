@@ -25,24 +25,15 @@
 				</div>
 			</li>
 			</ul>
-{% if app.user %}
-			
 			<ul class="navbar-nav mr-left">
-
-			
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('profil', {'id': app.user.id}) }}">Profil</a>
-				</li>
-<li class="nav-item">
-					<a class="nav-link" href="{{path('app_logout')}}">Se déconnecter</a>
-				</li>
+{% if app.user %}		
+<li class="nav-item"><a class="nav-link" href="{{path('user_info', {'id': app.user.id})}}">Consulter mes informations personnelles</a></li>
+				<li class="nav-item"><a class="nav-link" href="{{ path('user_edit', {'id': app.user.id}) }}">Modifier mon profil</a></li>
+    {{ include('user/_delete_form.html.twig') }}
+<li class="nav-item"><a class="nav-link" href="{{path('app_logout')}}">Se déconnecter</a></li>
 			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{path('app_login')}}">Connexion</a>
-				<a class="nav-link" href="{{path('app_register')}}">Inscription</a>
-				</li>
-
-
+				<li class="nav-item"><a class="nav-link"href="{{path('app_login')}}">Connexion</a></li>
+				<li class="nav-item"><a class="nav-link" href="{{path('app_register')}}">Inscription</a></li>
 			{% endif %}
 
 

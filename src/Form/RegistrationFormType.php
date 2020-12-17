@@ -36,7 +36,7 @@ class RegistrationFormType extends AbstractType
                 TextType::class,
                 ['label' => 'Nom']
             )
-            
+
             ->add(
                 'phone',
                 TextType::class,
@@ -64,15 +64,6 @@ class RegistrationFormType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmez le mot de passe'],
-            ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'label' => 'J\'accepte les CGU',
-                'mapped' => false,
-                'constraints' => [
-                    new IsTrue([
-                        'message' => 'You should agree to our terms.',
-                    ]),
-                ],
             ]);
     }
 

@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -16,86 +17,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  */
 class UserController extends AbstractController
 {
-    /**
-     * @Route("/", name="user_index", methods={"GET"})
-     */
-    public function index(UserRepository $userRepository): Response
-    {
-        return $this->render('user/index.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
 
     /**
-     * @Route("/new", name="user_new", methods={"GET","POST"})
-     */
-    public function new(Request $request): Response
-    {
-        $user = new User();
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('user_index');
-        }
-
-        return $this->render('user/new.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="user_show", methods={"GET"})
-     */
-    public function show(User $user): Response
-    {
-        return $this->render('user/show.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
-    /**
-     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
-     */
-    public function edit(Request $request, User $user): Response
-    {
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('user_index');
-        }
-
-        return $this->render('user/edit.html.twig', [
-            'user' => $user,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, User $user): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($user);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('user_index');
-    }
-
-
-    /**
-     * @Route("/account/{id}", name="account_show", methods={"GET"})
+     * @Route("/account/{id}", name="user_info", methods={"GET"})
      */
     public function userShow(User $user): Response
     {
@@ -110,32 +34,21 @@ class UserController extends AbstractController
         }
     }
 
-
     /**
-
-    /**
-     * NOTE: Permet d'éditer le profil de l'utilisateur connecté 
-     * @Route("/profil/{id}", name="profil", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
     public function userEdit(UserPasswordEncoderInterface $encoder, Request $request, User $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
-
         if ($this->getUser() == $user) {
-
             if ($form->isSubmitted() && $form->isValid()) {
-                //Permet de crypter le mot de passe 
-                $motDePasse = $encoder->encodePassword($user, $user->getPassword());
-
+                //Permet de crypter le mot de passe
+                $mdp = $encoder->encodePassword($user, $form->get('plainPassword')->getData());
                 //Envoi le mot de passe crypté
-                $user->setPassword($motDePasse);
-
+                $user->setPassword($mdp);
                 $this->getDoctrine()->getManager()->flush();
-
-                return $this->redirectToRoute('account_show', [
-                    'id' => $this->getUser()->getId()
-                ]);
+                return $this->redirectToRoute('home');
             }
 
             return $this->render('user/edit.html.twig', [
@@ -147,5 +60,20 @@ class UserController extends AbstractController
                 'user' => $user,
             ]);
         }
+    }
+
+    /**
+     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, User $user): Response
+    {
+        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($user);
+            $entityManager->flush();
+        }
+        $session = new Session();
+        $session->invalidate();
+        return $this->redirectToRoute('app_logout');
     }
 }

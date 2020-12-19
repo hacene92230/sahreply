@@ -14,7 +14,17 @@
 
 	</head>
 	<body>
-		{% include "shared/header.html.twig" %}
+{% if app.user %}
+		{% include "shared/headerUser.html.twig" %}
+				{% else %}
+{% include "shared/header.html.twig" %}
+						{% endif %}
+		        {% for message in app.flashes('success') %}
+		            <div class="alert alert-success">
+					{{ message }}
+					            </div>
+								        {% endfor %}
+										
 		{% block body %}{% endblock %}
  		{% block javascripts %}{% endblock %}
 		{% include "shared/footer.html.twig" %}

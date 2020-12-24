@@ -20,16 +20,10 @@ class PrestationController extends AbstractController
     /**
      * @Route("/", name="prestation_index", methods={"GET"})
      */
-    public function index(PrestationRepository $prestationRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(PrestationRepository $prestationRepository, Request $request): Response
     {
-        $donnees = $prestationRepository->findByStatut(785);
-        $prestations = $paginator->paginate(
-            $donnees,
-            $request->query->getInt('page', 1),
-            6
-        );
         return $this->render('prestation/index.html.twig', [
-            'prestations' => $prestations,
+            'prestations' => $prestationRepository->findAll(),
         ]);
     }
 

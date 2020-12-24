@@ -35,13 +35,13 @@ class Prestation
     private $user;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PrestationType::class, inversedBy="prestations", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=PrestationType::class, inversedBy="prestations", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $type;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PrestationStatut::class, inversedBy="prestations", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=PrestationStatut::class, inversedBy="prestations", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $statut;

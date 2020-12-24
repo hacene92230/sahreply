@@ -85,7 +85,7 @@ class User implements UserInterface
         $this->prestation = new ArrayCollection();
     }
 
-/**
+    /**
      /**
      * perrmet d'initialiser un slug
      * @ORM\PrePersist
@@ -100,7 +100,7 @@ class User implements UserInterface
         }
     }
 
-        public function getId(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -290,5 +290,10 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getFirstname();
     }
 }

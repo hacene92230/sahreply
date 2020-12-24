@@ -2,13 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\StatutRepository;
+use App\Repository\PrestationStatutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=StatutRepository::class)
+ * @ORM\Entity(repositoryClass=PrestationStatutRepository::class)
  */
 class PrestationStatut
 {
@@ -80,5 +80,10 @@ class PrestationStatut
         }
 
         return $this;
+    }
+
+    public function __toString()
+    {
+        return (string) $this->getNom();
     }
 }

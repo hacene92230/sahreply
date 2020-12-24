@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Statut;
+use App\Entity\PrestationStatut;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -16,7 +16,7 @@ class PrestationStatutRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Statut::class);
+        parent::__construct($registry, PrestationStatut::class);
     }
 
     // /**

@@ -1,34 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Prestation index{% endblock %}
+{% block title %}Prestation index
+{% endblock %}
 
 {% block body %}
     <h1>Prestation index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Créer le</th>
-                <th>Nombre d'heure</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for prestation in prestations %}
-                                    <tr>
-                <td><a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a></td>
-                <td>{{ prestation.nbheure }}</td>
-                <td>
-{% include "prestation/_delete_form.html.twig" %} 
-                    <a href="{{ path('prestation_edit', {'id': prestation.id}) }}">modifier cette prestation</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">Aucune prestation trouvée</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <a href="{{ path('prestation_new') }}">Create new</a>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Créer le</th>
+				<th>Nombre d'heure</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for prestation in prestations %}
+				{{ prestation.user }}
+				<tr>
+					<td>
+						<a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+					</td>
+					<td>{{ prestation.nbheure }}</td>
+					<td>
+						{% include "prestation/_delete_form.html.twig" %}
+						<a href="{{ path('prestation_edit', {'id': prestation.id}) }}">modifier cette prestation</a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">Aucune prestation trouvée</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<a href="{{ path('prestation_new') }}">Create new</a>
 {% endblock %}

@@ -27,67 +27,67 @@ class AppFixtures extends Fixture
         $faker = Factory::create("FR-fr");
         //Création des users
         for ($i = 0; $i < 20; $i++) {
-            $_user = new User();
-            $_user->setFirstName($faker->firstName)
+            $_user[] = new User();
+            $_user[$i]->setFirstName($faker->firstName)
                 ->setLastName($faker->lastName)
                 ->setAddress($faker->address)
                 ->setCity($faker->city)
                 ->setPostalCode($faker->numberBetween(10000, 98000))
                 ->setPhone("0612211190")
-                ->setPassword($this->encoder->encodePassword($_user, 'password'))
+                ->setPassword($this->encoder->encodePassword($_user[$i], 'password'))
                 ->setCreatedAt(new \DateTime());
             if ($i == 0) {
-                $_user->setRoles(["ROLE_ADMIN"]);
-                $_user->setEmail("hacenesahraoui.paris@gmail.com");
+                $_user[0]->setRoles(["ROLE_ADMIN"]);
+                $_user[0]->setEmail("hacenesahraoui.paris@gmail.com");
             } else if ($i > 0) {
-                $_user->setRoles(["ROLE_USER"]);
-                $_user->setEmail("user$i@gmail.com");
+                $_user[$i]->setRoles(["ROLE_USER"])
+                    ->setEmail("user$i@gmail.com");
             }
-            $manager->persist($_user);
+            $manager->persist($_user[$i]);
         }
 
         //creation des statuts
         for ($k = 0; $k < 3; $k++) {
-            $_statut = new PrestationStatut();
+            $_statut[] = new PrestationStatut();
             if ($k == 0)
-                $_statut->setNom("en attente d'acceptation");
+                $_statut[$k]->setNom("en attente d'acceptation");
             else if ($k == 1)
-                $_statut->setNom("en cours de réalisation");
+                $_statut[$k]->setNom("en cours de réalisation");
             else if ($k == 2)
-                $_statut->setNom("terminé");;
-            $manager->persist($_statut);
+                $_statut[$k]->setNom("terminé");;
+            $manager->persist($_statut[$k]);
         }
 
         //Création des types de prestation
         for ($j = 0; $j <= 4; $j++) {
-            $_type = new PrestationType();
+            $_type[] = new PrestationType();
             if ($j == 0)
-                $_type->setNom("ménage")
+                $_type[$j]->setNom("ménage")
                     ->setTarif(10);
             elseif ($j == 1)
-                $_type->setNom("course")
+                $_type[$j]->setNom("course")
                     ->setTarif(8);
             elseif ($j == 2)
-                $_type->setNom("cuisine")
+                $_type[$j]->setNom("cuisine")
                     ->setTarif(13);
             elseif ($j == 3)
-                $_type->setNom("garde d'enfant")
+                $_type[$j]->setNom("garde d'enfant")
                     ->setTarif(9);
             elseif ($j == 4)
-                $_type->setNom("déménagement")
+                $_type[$j]->setNom("déménagement")
                     ->setTarif(16);
-            $manager->persist($_type);
+            $manager->persist($_type[$j]);
         }
 
         //création des prestations
         for ($l = 0; $l < 70; $l++) {
-            $_prestation = new Prestation();
-            $_prestation->setCreatedAt(new \DateTime())
+            $_prestation[] = new Prestation();
+            $_prestation[$l]->setCreatedAt(new \DateTime())
                 ->setNbheure($faker->numberBetween(1, 11))
-                ->setUser($_user)
-                ->setStatut($_statut)
-                ->setType($_type);
-            $manager->persist($_prestation);
+                ->setUser($_user[rand(0, count($_user) - 1)])
+                ->setStatut($_statut[rand(0, count($_statut) - 1)])
+                ->setType($_type[rand(0, count($_type) - 1)]);
+            $manager->persist($_prestation[$l]);
         }
         $manager->flush();
     }

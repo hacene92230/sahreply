@@ -6,9 +6,11 @@ use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
  * @ORM\Entity(repositoryClass=PrestationRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Prestation
 {
@@ -45,6 +47,22 @@ class Prestation
      * @ORM\JoinColumn(nullable=false)
      */
     private $statut;
+
+
+    /**
+     /**
+     * perrmet d'initialiser un slug
+     * @ORM\PrePersist
+     *
+     * @return void
+     */
+    public function initialize()
+    {
+        //records the current date when a loan is created 
+        if (empty($this->createdAt)) {
+            $this->createdAt = new \DateTime();
+        }
+    }
 
     public function getId(): ?int
     {

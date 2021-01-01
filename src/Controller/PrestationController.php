@@ -18,11 +18,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PrestationController extends AbstractController
 {
     /**
-     * @Route("/", name="prestation_index", methods={"GET"})
-     */
-    public function index(PrestationRepository $prestationRepository, Request $request): Response
+     * @Route("/fin", name="prestation_fin", methods={"GET"})
+     * @Route("/cours", name="prestation_cours", methods={"GET"})
+    * @Route("/attente", name="prestation_attente", methods={"GET"})
+         */
+    public function fin(PrestationRepository $prestationRepository, Request $request): Response
     {
-        return $this->render('prestation/index.html.twig', [
+        return $this->render('prestation/fin.html.twig', [
             'prestations' => $prestationRepository->findAll(),
         ]);
     }
@@ -40,8 +42,7 @@ class PrestationController extends AbstractController
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($prestation);
             $entityManager->flush();
-
-            return $this->redirectToRoute('prestation_index');
+            return $this->redirectToRoute('prestation_fin');
         }
 
         return $this->render('prestation/new.html.twig', [
@@ -71,7 +72,7 @@ class PrestationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('prestation_index');
+            return $this->redirectToRoute('prestation_fin');
         }
 
         return $this->render('prestation/edit.html.twig', [
@@ -90,8 +91,6 @@ class PrestationController extends AbstractController
             $entityManager->remove($prestation);
             $entityManager->flush();
         }
-        $session = new Session();
-        $session->invalidate();
-        return $this->redirectToRoute('prestation_index');
+        return $this->redirectToRoute('prestation_fin');
     }
 }

@@ -1,30 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Prestation{% endblock %}
+{% block title %}Prestation
+{% endblock %}
 
 {% block body %}
-    <h1>Prestation</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ prestation.id }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ prestation.createdAt ? prestation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Nbheure</th>
-                <td>{{ prestation.statut }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('prestation_index') }}">back to list</a>
-
-    <a href="{{ path('prestation_edit', {'id': prestation.id}) }}">edit</a>
-
-    {{ include('prestation/_delete_form.html.twig') }}
+	<h1>Prestation</h1>
+	<a href="{{ path('home') }}">retour à l'accueil</a>
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Statut</th>
+				<td>{{ prestation.statut }}</td>
+			</tr>
+		            <tr>
+				<th>Type</th>
+				<td>{{ prestation.type }}</td>
+			</tr>
+		                    <tr>
+				<th>Créé le</th>
+				<td>{{ prestation.createdAt ? prestation.createdAt|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Nombre d'heure</th>
+				<td>{{ prestation.nbheure }}</td>
+			</tr>
+			        </tbody>
+	</table>
 {% endblock %}

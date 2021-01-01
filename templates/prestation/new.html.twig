@@ -1,11 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Prestation{% endblock %}
+{% block title %}Demander une prestation{% endblock %}
 
 {% block body %}
-    <h1>Create new Prestation</h1>
-
+    <h1>Demander une prestation</h1>
+<a href="{{ path('prestation_index') }}">retour à mes prestations</a>
     {{ include('prestation/_form.html.twig') }}
-
-    <a href="{{ path('prestation_index') }}">back to list</a>
-{% endblock %}
+    {% endblock %}

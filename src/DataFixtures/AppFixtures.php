@@ -26,7 +26,7 @@ class AppFixtures extends Fixture
     {
         $faker = Factory::create("FR-fr");
         //Création des users
-        for ($i = 0; $i < 20; $i++) {
+        for ($i = 0; $i < 50; $i++) {
             $_user[] = new User();
             $_user[$i]->setFirstName($faker->firstName)
                 ->setLastName($faker->lastName)
@@ -80,7 +80,7 @@ class AppFixtures extends Fixture
         }
 
         //création des prestations
-        for ($l = 0; $l < 70; $l++) {
+        for ($l = 0; $l < 500; $l++) {
             $_prestation[] = new Prestation();
             $_prestation[$l]->setCreatedAt(new \DateTime())
                 ->setNbheure($faker->numberBetween(1, 11))

@@ -4,6 +4,6 @@
 
 {% block body %}
     <h1>Demander une prestation</h1>
-<a href="{{ path('prestation_index') }}">retour à mes prestations</a>
+<a href="{{ path('prestation_attente') }}">retour à mes prestations en attente d'acceptation</a>
     {{ include('prestation/_form.html.twig') }}
     {% endblock %}

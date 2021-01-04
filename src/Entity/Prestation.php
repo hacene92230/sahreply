@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
-use App\Repository\PrestationRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use App\Entity\PrestationStatut;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\PrestationRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * @ORM\Entity(repositoryClass=PrestationRepository::class)
@@ -48,17 +49,14 @@ class Prestation
      */
     private $statut;
 
-
     /**
      /**
-     * perrmet d'initialiser un slug
      * @ORM\PrePersist
      *
      * @return void
      */
     public function initialize()
     {
-        //records the current date when a loan is created 
         if (empty($this->createdAt)) {
             $this->createdAt = new \DateTime();
         }

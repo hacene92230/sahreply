@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes prestations
+{% endblock %}
+
+{% block body %}
+{% if app.request.attributes.get('_route') == "prestation_attente" %}
+<h1>Prestations en attente d'acceptations</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Créer le</th>
+			<th>Nombre d'heure</th>
+			<th>actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% set nb = 0 %}
+{% for prestation in prestations %}
+			{% if prestation.user == app.user.firstname and prestation.statut == "en attente d'acceptation" %}
+				{% set nb = nb + 1 %}
+				<tr>
+					<td>
+						<a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+					</td>
+					<td>{{ prestation.nbheure }}</td>
+					<td>
+						{% include "prestation/_delete_form.html.twig" %}
+						<a href="{{ path('prestation_edit', {'id': prestation.id}) }}">modifier cette prestation</a>
+					</td>
+				</tr>		
+{% endif %}
+{% endfor %}
+		<p>
+			vous avez
+			{{ nb }}
+			prestations en attente d'acceptation</p>
+	</tbody>
+</table>	
+{% endif %}
+{% if app.request.attributes.get('_route') == "prestation_cours" %}
+<h1>Prestations en cours</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Créer le</th>
+			<th>Nombre d'heure</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% set nb = 0 %}
+{% for prestation in prestations %}
+			{% if prestation.user == app.user.firstname and prestation.statut == "en cours de réalisation" %}
+				{% set nb = nb + 1 %}
+				<tr>
+					<td>
+						<a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+					</td>
+					<td>{{ prestation.nbheure }}</td>
+									</tr>		
+{% endif %}
+{% endfor %}
+		<p>
+			vous avez
+			{{ nb }}
+			prestations en cours</p>
+	</tbody>
+</table>	
+{% endif %}
+{% if app.request.attributes.get('_route') == "prestation_fin" %}
+<h1>Prestations terminer</h1>
+<table class="table">
+	<thead>
+		<tr>
+			<th>Créer le</th>
+			<th>Nombre d'heure</th>
+					</tr>
+	</thead>	<tbody>
+		{% set nb = 0 %}
+{% for prestation in prestations %}
+			{% if prestation.user == app.user.firstname and prestation.statut == "terminé" %}
+				{% set nb = nb + 1 %}
+				<tr>
+					<td>
+						<a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+					</td>
+					<td>{{ prestation.nbheure }}</td>
+									</tr>		
+{% endif %}
+{% endfor %}
+		<p>
+			vous avez
+			{{ nb }}
+			prestations terminées</p>
+	</tbody>
+</table>	
+{% endif %}
+	{% endblock %}

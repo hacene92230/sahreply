@@ -3,8 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Prestation;
-use App\Form\PrestationType;
+use App\Form\PrestationFormType;
 use App\Repository\PrestationRepository;
+use App\Repository\PrestationStatutRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,11 +21,11 @@ class PrestationController extends AbstractController
     /**
      * @Route("/fin", name="prestation_fin", methods={"GET"})
      * @Route("/cours", name="prestation_cours", methods={"GET"})
-    * @Route("/attente", name="prestation_attente", methods={"GET"})
-         */
-    public function fin(PrestationRepository $prestationRepository, Request $request): Response
+     * @Route("/attente", name="prestation_attente", methods={"GET"})
+     */
+    public function index(PrestationRepository $prestationRepository, Request $request): Response
     {
-        return $this->render('prestation/fin.html.twig', [
+        return $this->render('prestation/index.html.twig', [
             'prestations' => $prestationRepository->findAll(),
         ]);
     }
@@ -32,17 +33,19 @@ class PrestationController extends AbstractController
     /**
      * @Route("/new", name="prestation_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request, PrestationStatutRepository $prestationRepo): Response
     {
         $prestation = new Prestation();
-        $form = $this->createForm(PrestationType::class, $prestation);
+        $form = $this->createForm(PrestationFormType::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $prestation->setStatut($prestationRepo->findBynom("en attente d'acceptation")[0]);
+            $prestation->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($prestation);
             $entityManager->flush();
-            return $this->redirectToRoute('prestation_fin');
+            return $this->redirectToRoute('prestation_attente');
         }
 
         return $this->render('prestation/new.html.twig', [
@@ -66,13 +69,13 @@ class PrestationController extends AbstractController
      */
     public function edit(Request $request, Prestation $prestation): Response
     {
-        $form = $this->createForm(PrestationType::class, $prestation);
+        $form = $this->createForm(PrestationFormType::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('prestation_fin');
+            return $this->redirectToRoute('prestation_attente');
         }
 
         return $this->render('prestation/edit.html.twig', [
@@ -91,6 +94,16 @@ class PrestationController extends AbstractController
             $entityManager->remove($prestation);
             $entityManager->flush();
         }
-        return $this->redirectToRoute('prestation_fin');
+        return $this->redirectToRoute('prestation_attente');
+    }
+
+    /**
+     * @Route("/realiser-une-prestation", name="prestation_aRealiser", methods={"GET"})
+     */
+    public function prestationaArealiser(PrestationRepository $prestationRepository, Request $request): Response
+    {
+        return $this->render('prestation/index.html.twig', [
+            'prestations' => $prestationRepository->findAll(),
+        ]);
     }
 }

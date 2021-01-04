@@ -12,7 +12,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-
+use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
 class AppFixtures extends Fixture
 {
     private $encoder;

@@ -40,7 +40,7 @@ class PrestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $prestation->setStatut($prestationRepo->findBynom("en attente d'acceptation")[0]);
+            $prestation->setStatut($prestationRepo->findByNom("en attente d'acceptation")[0]);
             $prestation->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($prestation);
@@ -95,15 +95,5 @@ class PrestationController extends AbstractController
             $entityManager->flush();
         }
         return $this->redirectToRoute('prestation_attente');
-    }
-
-    /**
-     * @Route("/realiser-une-prestation", name="prestation_aRealiser", methods={"GET"})
-     */
-    public function prestationaArealiser(PrestationRepository $prestationRepository, Request $request): Response
-    {
-        return $this->render('prestation/index.html.twig', [
-            'prestations' => $prestationRepository->findAll(),
-        ]);
     }
 }

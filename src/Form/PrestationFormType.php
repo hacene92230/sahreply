@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Form;
+
+use App\Entity\User;
 use App\Entity\Prestation;
-use App\Entity\PrestationStatut;
 use App\Entity\PrestationType;
+use App\Entity\PrestationStatut;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,8 +21,8 @@ class PrestationFormType extends AbstractType
         $builder
             ->add('createdAt', DateTimeType::class)
             ->add('nbheure', IntegerType::class, ['label' => 'Nombre d\'heure'])
-            ->add('user')
-            ->add('type', EntityType::class, ['class' => PrestationType::class])
+            ->add('user', entityType::class, ['class' => User::class])
+            ->add('type', entityType::class, ['class' => PrestationType::class])
             ->add('statut');
     }
 

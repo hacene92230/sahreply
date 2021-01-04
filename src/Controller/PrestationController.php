@@ -40,7 +40,7 @@ class PrestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $prestation->setStatut($prestationRepo->findByNom("en attente d'acceptation")[0]);
+            $prestation->setStatut($prestationRepo->findOneByNom("en attente d'acceptation"));
             $prestation->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($prestation);

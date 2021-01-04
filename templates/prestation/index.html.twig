@@ -21,7 +21,7 @@
 						{% set nb = nb + 1 %}
 						<tr>
 							<td>
-								<a href="{{ path('prestation_show', {'id': prestation.user.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+								<a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
 							</td>
 							<td>{{ prestation.nbheure }}</td>
 							<td>
@@ -54,7 +54,7 @@
 						{% set nb = nb + 1 %}
 						<tr>
 							<td>
-								<a href="{{ path('prestation_show', {'id': prestation.user.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+								<a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
 							</td>
 							<td>{{ prestation.nbheure }}</td>
 						</tr>
@@ -83,7 +83,7 @@
 						{% set nb = nb + 1 %}
 						<tr>
 							<td>
-								<a href="{{ path('prestation_show', {'id': prestation.user.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+								<a href="{{ path('prestation_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
 							</td>
 							<td>{{ prestation.nbheure }}</td>
 						</tr>

@@ -37,12 +37,7 @@ class UserFormType extends AbstractType
                 //'choice_value' => ,
                 'label' => 'Rôles',
             ])
-            ->add('createdAt', DateTimeType::class, [
-                'disabled' => true,
-                'label' => 'Created (not editable)',
-            ])
 
-            ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('address')
             ->add('postalcode', NumberType::class)

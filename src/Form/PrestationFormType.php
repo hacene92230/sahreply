@@ -19,11 +19,10 @@ class PrestationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('createdAt', DateTimeType::class)
             ->add('nbheure', IntegerType::class, ['label' => 'Nombre d\'heure'])
-            ->add('user', entityType::class, ['class' => User::class])
-            ->add('type', entityType::class, ['class' => PrestationType::class])
-            ->add('statut');
+            ->add('user', entityType::class, ['class' => User::class, 'choice_label' => "firstname"])
+            ->add('type', entityType::class, ['class' => PrestationType::class,  'choice_label' => "nom"])
+            ->add('statut', entityType::class, ['class' => PrestationStatut::class,  'choice_label' => "nom"]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

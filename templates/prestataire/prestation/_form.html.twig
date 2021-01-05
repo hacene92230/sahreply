@@ -1,0 +1,9 @@
+{{ form_start(form) }}
+
+
+{% do form.user.setRendered() %}
+{% do form.statut.setRendered() %}
+
+    {{ form_widget(form) }}       
+    <button class="btn">{{ button_label|default('Enregistrer ma demande') }}</button>
+{{ form_end(form) }}

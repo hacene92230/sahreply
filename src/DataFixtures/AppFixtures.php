@@ -13,6 +13,7 @@ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\Common\DataFixtures\Purger\PurgerInterface;
+
 class AppFixtures extends Fixture
 {
     private $encoder;
@@ -25,6 +26,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $faker = Factory::create("FR-fr");
+
         //Création des users
         for ($i = 0; $i < 50; $i++) {
             $_user[] = new User();
@@ -87,6 +89,9 @@ class AppFixtures extends Fixture
                 ->setUser($_user[rand(0, count($_user) - 1)])
                 ->setStatut($_statut[rand(0, count($_statut) - 1)])
                 ->setType($_type[rand(0, count($_type) - 1)]);
+            if ($_prestation[$l]->getStatut()->getNom() == "terminé") {
+                $_prestation[$l]->setAchieveAt(new \DateTime());
+            }
             $manager->persist($_prestation[$l]);
         }
         $manager->flush();

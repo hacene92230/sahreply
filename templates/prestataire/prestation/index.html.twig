@@ -1,20 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello prestationController!{% endblock %}
+{% block title %}Prestation disponibles
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/wamp/www/sahreply/src/Controller/Prestataire/prestationController.php'|file_link(0) }}">src/Controller/Prestataire/prestationController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/wamp/www/sahreply/templates/prestataire/prestation/index.html.twig'|file_link(0) }}">templates/prestataire/prestation/index.html.twig</a></code></li>
-    </ul>
-</div>
+	<h1>Prestation disponibles</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Créer le</th>
+				<th>Nombre d'heure</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% set nb = 0 %}
+			{% for prestation in prestations %}
+				{% if prestation.statut.nom == "en attente d'acceptation" %}
+				{% set nb = nb + 1 %}
+				<tr>
+					<td>
+						<a href="{{ path('prestataire_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
+					</td>
+					<td>{{ prestation.nbheure }}</td>
+					<td>
+						{% include "prestation/_delete_form.html.twig" %}
+						<a href="{{ path('prestation_edit', {'id': prestation.id}) }}">modifier cette prestation</a>
+					</td>
+				</tr>
+{% endif %}
+			{% endfor %}
+			<p>
+				vous avez
+				{{ nb }}
+				prestations en attente d'acceptation</p>
+		</tbody>
+	</table>
 {% endblock %}

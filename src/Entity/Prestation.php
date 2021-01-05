@@ -50,6 +50,11 @@ class Prestation
     private $statut;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $achieveAt;
+
+    /**
      /**
      * @ORM\PrePersist
      *
@@ -123,6 +128,18 @@ class Prestation
     public function setStatut(?PrestationStatut $statut): self
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    public function getAchieveAt(): ?\DateTimeInterface
+    {
+        return $this->achieveAt;
+    }
+
+    public function setAchieveAt(?\DateTimeInterface $achieveAt): self
+    {
+        $this->achieveAt = $achieveAt;
 
         return $this;
     }

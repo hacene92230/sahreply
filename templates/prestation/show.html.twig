@@ -26,7 +26,11 @@
 				<td>{{ prestation.createdAt ? prestation.createdAt|date('Y-m-d') : '' }}</td>
 			</tr>
 			<tr>
-				<th>Réaliser le</th>
+				<th>Nombre d'heure</th>
+				<td>{{ prestation.nbheure }}</td>
+			</tr>
+			<tr>
+								<th>Réaliser le</th>
 				{% if prestation.achieveAt is null %}
 					<td>Cette prestation n'a pas encor été réaliser</td>
 				{% else %}
@@ -34,8 +38,12 @@
 				{% endif %}
 			</tr>
 			<tr>
-				<th>Nombre d'heure</th>
-				<td>{{ prestation.nbheure }}</td>
+<th>Instruction</th>
+{% if prestation.instruction is null %}
+				<td>Aucune instruction n'a été fournie pour cette prestation</td>
+			{% else %}
+		<td>{{ prestation.instruction.contenu }}</td>	
+			{% endif %}
 			</tr>
 		</tbody>
 	</table>

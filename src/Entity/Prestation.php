@@ -55,14 +55,9 @@ class Prestation
     private $achieveAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PrestationInstruction::class, inversedBy="prestations")
+     * @ORM\ManyToOne(targetEntity=PrestationInstruction::class, inversedBy="prestations", cascade={"persist", "remove"})
      */
     private $instruction;
-
-    public function __construct()
-    {
-        $this->commentaire = new ArrayCollection();
-    }
 
     /**
      /**
@@ -154,12 +149,12 @@ class Prestation
         return $this;
     }
 
-    public function getInstruction(): ?Instruction
+    public function getInstruction(): ?PrestationInstruction
     {
         return $this->instruction;
     }
 
-    public function setInstruction(?Instruction $instruction): self
+    public function setInstruction(?PrestationInstruction $instruction): self
     {
         $this->instruction = $instruction;
 

@@ -7,10 +7,10 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @method Instruction|null find($id, $lockMode = null, $lockVersion = null)
- * @method Instruction|null findOneBy(array $criteria, array $orderBy = null)
- * @method Instruction[]    findAll()
- * @method Instruction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method PrestationInstruction|null find($id, $lockMode = null, $lockVersion = null)
+ * @method PrestationInstruction|null findOneBy(array $criteria, array $orderBy = null)
+ * @method PrestationInstruction[]    findAll()
+ * @method PrestationInstruction[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class PrestationInstructionRepository extends ServiceEntityRepository
 {
@@ -20,15 +20,15 @@ class PrestationInstructionRepository extends ServiceEntityRepository
     }
 
     // /**
-    //  * @return Instruction[] Returns an array of Instruction objects
+    //  * @return PrestationInstruction[] Returns an array of PrestationInstruction objects
     //  */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('i.id', 'ASC')
+            ->orderBy('p.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -37,10 +37,10 @@ class PrestationInstructionRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Instruction
+    public function findOneBySomeField($value): ?PrestationInstruction
     {
-        return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

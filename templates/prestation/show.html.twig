@@ -1,10 +1,15 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} prestations du {{ prestation.createdAt|date('d-m-Y') }}
+{% block title %}
+	prestations du
+	{{ prestation.createdAt|date('d-m-Y') }}
 {% endblock %}
 
 {% block body %}
-	<h1>Prestation demander par {{ prestation.user.firstname }} le {{ prestation.createdAt|date('d-m-Y') }}</h1>
+	<h1>Prestation demander par
+		{{ prestation.user.firstname }}
+		le
+		{{ prestation.createdAt|date('d-m-Y') }}</h1>
 	<a href="{{ path('home') }}">retour à l'accueil</a>
 	<table class="table">
 		<tbody>
@@ -12,18 +17,26 @@
 				<th>Statut</th>
 				<td>{{ prestation.statut.nom }}</td>
 			</tr>
-		            <tr>
+			<tr>
 				<th>Type</th>
 				<td>{{ prestation.type.nom }}</td>
 			</tr>
-		                    <tr>
+			<tr>
 				<th>Créé le</th>
 				<td>{{ prestation.createdAt ? prestation.createdAt|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Réaliser le</th>
+				{% if prestation.achieveAt is null %}
+					<td>Cette prestation n'a pas encor été réaliser</td>
+				{% else %}
+					<td>{{ prestation.achieveAt ? prestation.achieveAt|date('Y-m-d') : '' }}</td>
+				{% endif %}
 			</tr>
 			<tr>
 				<th>Nombre d'heure</th>
 				<td>{{ prestation.nbheure }}</td>
 			</tr>
-			        </tbody>
+		</tbody>
 	</table>
 {% endblock %}

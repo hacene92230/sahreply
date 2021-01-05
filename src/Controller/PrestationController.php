@@ -5,9 +5,9 @@ namespace App\Controller;
 use App\Entity\Prestation;
 use App\Form\PrestationFormType;
 use App\Repository\PrestationRepository;
-use App\Repository\PrestationStatutRepository;
-use Knp\Component\Pager\PaginatorInterface;
+
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\PrestationStatutRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -36,6 +36,7 @@ class PrestationController extends AbstractController
     public function new(Request $request, PrestationStatutRepository $prestationRepo): Response
     {
         $prestation = new Prestation();
+
         $form = $this->createForm(PrestationFormType::class, $prestation);
         $form->handleRequest($request);
 

@@ -66,7 +66,8 @@ class User implements UserInterface
     private $city;
 
     /**
-     * @ORM\Column(type="datetime")
+
+    * @ORM\Column(type="datetime")
      */
     private $createdAt;
 

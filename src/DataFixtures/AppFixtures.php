@@ -84,13 +84,13 @@ class AppFixtures extends Fixture
         //création des prestations
         for ($l = 0; $l < 500; $l++) {
             $_prestation[] = new Prestation();
-            $_prestation[$l]->setCreatedAt(new \DateTime())
+            $_prestation[$l]->setCreatedAt($faker->dateTimeBetween('+0 days', '+2 years'))
                 ->setNbheure($faker->numberBetween(1, 11))
                 ->setUser($_user[rand(0, count($_user) - 1)])
                 ->setStatut($_statut[rand(0, count($_statut) - 1)])
                 ->setType($_type[rand(0, count($_type) - 1)]);
             if ($_prestation[$l]->getStatut()->getNom() == "terminé") {
-                $_prestation[$l]->setAchieveAt(new \DateTime());
+                $_prestation[$l]->setAchieveAt($faker->dateTimeBetween('+0 days', '+12 years'));
             }
             $manager->persist($_prestation[$l]);
         }

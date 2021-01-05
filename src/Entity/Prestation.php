@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Entity\PrestationStatut;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\Collection;
@@ -34,6 +33,7 @@ class Prestation
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="prestation")
+     * @ORM\JoinColumn(nullable=false)
      */
     private $user;
 
@@ -53,6 +53,16 @@ class Prestation
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $achieveAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=PrestationInstruction::class, inversedBy="prestations")
+     */
+    private $instruction;
+
+    public function __construct()
+    {
+        $this->commentaire = new ArrayCollection();
+    }
 
     /**
      /**
@@ -140,6 +150,18 @@ class Prestation
     public function setAchieveAt(?\DateTimeInterface $achieveAt): self
     {
         $this->achieveAt = $achieveAt;
+
+        return $this;
+    }
+
+    public function getInstruction(): ?Instruction
+    {
+        return $this->instruction;
+    }
+
+    public function setInstruction(?Instruction $instruction): self
+    {
+        $this->instruction = $instruction;
 
         return $this;
     }

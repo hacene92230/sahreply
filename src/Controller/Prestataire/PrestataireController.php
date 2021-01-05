@@ -53,7 +53,7 @@ class PrestataireController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="prestataire_show", methods={"GET"})
+     * @Route("/voir-prestation-{id}", name="prestataire_show", methods={"GET"})
      */
     public function show(Prestation $prestation): Response
     {

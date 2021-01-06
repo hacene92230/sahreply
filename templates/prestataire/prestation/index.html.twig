@@ -14,26 +14,20 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% set nb = 0 %}
 			{% for prestation in prestations %}
-				{% if prestation.statut.nom == "en attente d'acceptation" %}
-				{% set nb = nb + 1 %}
+				{% if prestation.statut.id == 1 %}
 				<tr>
 					<td>
 						<a href="{{ path('prestataire_show', {'id': prestation.id}) }}">{{ prestation.createdAt ? prestation.createdAt|date('d-m-Y') : '' }}</a>
 					</td>
 					<td>{{ prestation.nbheure }}</td>
 					<td>
-						{% include "prestation/_delete_form.html.twig" %}
-						<a href="{{ path('prestation_edit', {'id': prestation.id}) }}">modifier cette prestation</a>
+						{% include "prestataire/prestation/_accepter_form.html.twig" %}
 					</td>
 				</tr>
 {% endif %}
 			{% endfor %}
-			<p>
-				vous avez
-				{{ nb }}
-				prestations en attente d'acceptation</p>
 		</tbody>
 	</table>
+{{ knp_pagination_render(prestations) }}
 {% endblock %}

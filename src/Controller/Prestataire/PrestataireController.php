@@ -10,7 +10,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -21,10 +20,12 @@ class PrestataireController extends AbstractController
     /**
      * @Route("/prestation-disponible", name="prestataire_Prestationdisponible", methods={"GET"})
      */
-    public function index(PrestationRepository $prestationRepository, Request $request): Response
+    public function index(PrestationRepository $prestationRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        $donnees = $prestationRepository->findByStatut(1);
+        $prestation = $paginator->paginate($donnees, $request->query->getInt('page', 1), 10);
         return $this->render('prestataire/prestation/index.html.twig', [
-            'prestations' => $prestationRepository->findAll(),
+            'prestations' => $prestation,
         ]);
     }
 

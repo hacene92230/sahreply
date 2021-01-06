@@ -17,7 +17,7 @@
 			<tbody>
 				{% set nb = 0 %}
 				{% for prestation in prestations %}
-					{% if prestation.user.id == app.user.id and prestation.statut.nom == "en attente d'acceptation" %}
+					{% if prestation.user.id == app.user.id and prestation.statut.id == 1 %}
 						{% set nb = nb + 1 %}
 						<tr>
 							<td>
@@ -50,7 +50,7 @@
 			<tbody>
 				{% set nb = 0 %}
 				{% for prestation in prestations %}
-					{% if prestation.user.id == app.user.id and prestation.statut.nom == "en cours de réalisation" %}
+					{% if prestation.user.id == app.user.id and prestation.statut.id == 2 %}
 						{% set nb = nb + 1 %}
 						<tr>
 							<td>
@@ -79,7 +79,7 @@
 			<tbody>
 				{% set nb = 0 %}
 				{% for prestation in prestations %}
-					{% if prestation.user.id == app.user.id and prestation.statut.nom == "terminé" %}
+					{% if prestation.user.id == app.user.id and prestation.statut.id == 3 %}
 						{% set nb = nb + 1 %}
 						<tr>
 							<td>

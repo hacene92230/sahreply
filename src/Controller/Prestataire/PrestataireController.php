@@ -1,13 +1,15 @@
 <?php
 
 namespace App\Controller\Prestataire;
-
+use App\Wkhtml\PDFRender;
 use App\Entity\Prestation;
+use App\Entity\Prestataire;
 use App\Form\PrestationFormType;
 use App\Repository\PrestationRepository;
-use App\Repository\PrestationStatutRepository;
+use App\Repository\PrestataireRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Repository\PrestationStatutRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -24,75 +26,48 @@ class PrestataireController extends AbstractController
     {
         $donnees = $prestationRepository->findByStatut(1);
         $prestation = $paginator->paginate($donnees, $request->query->getInt('page', 1), 10);
-        return $this->render('prestataire/prestation/index.html.twig', [
+        return $this->render('prestataire/prestation/disponible.html.twig', [
             'prestations' => $prestation,
         ]);
     }
 
     /**
-     * @Route("/new", name="prestation_new", methods={"GET","POST"})
+     * @Route("/mes-prestations-futures", name="prestataire_futur", methods={"GET"})
      */
-    public function new(Request $request, PrestationStatutRepository $prestationRepo): Response
+    public function prestationFutur(PrestataireRepository $prestataireRepo, Request $request): Response
     {
-        $prestation = new Prestation();
-        $form = $this->createForm(PrestationFormType::class, $prestation);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $prestation->setStatut($prestationRepo->findOneByNom("en attente d'acceptation"));
-            $prestation->setUser($this->getUser());
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($prestation);
-            $entityManager->flush();
-            return $this->redirectToRoute('prestation_attente');
-        }
-
-        return $this->render('prestation/new.html.twig', [
-            'prestation' => $prestation,
-            'form' => $form->createView(),
+        $futur = $prestataireRepo->findByUser($this->getUser());
+        return $this->render('prestataire/prestation/futur.html.twig', [
+            'futures' => $futur,
         ]);
     }
 
     /**
      * @Route("/voir-prestation-{id}", name="prestataire_show", methods={"GET"})
      */
-    public function show(Prestation $prestation): Response
+    public function show(PDFRender $pdf, Prestation $prestation): Response
     {
-        return $this->render('prestataire/prestation/show.html.twig', [
-            'prestation' => $prestation,
-        ]);
+        return $this->render('prestataire/prestation/show.html.twig', ['prestation' => $prestation,]);
+        return $pdf->render($html, $property->getId() . self::EXTENSION_PDF_FORMAT);
+
+
+        
     }
 
     /**
-     * @Route("/{id}/edit", name="prestation_edit", methods={"GET","POST"})
+     * @Route("-accepter-{id}", name="prestation_accepter", methods={"ACCEPTER"})
      */
-    public function edit(Request $request, Prestation $prestation): Response
+    public function accepter(Request $request, PrestationStatutRepository $statutRepo, PrestationRepository $prestationRepo, Prestation $prestation): Response
     {
-        $form = $this->createForm(PrestationFormType::class, $prestation);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
-
-            return $this->redirectToRoute('prestation_attente');
+        if ($this->isCsrfTokenValid('accepter' . $prestation->getId(), $request->request->get('_token'))) {
         }
-
-        return $this->render('prestation/edit.html.twig', [
-            'prestation' => $prestation,
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/{id}", name="prestation_delete", methods={"DELETE"})
-     */
-    public function delete(Request $request, Prestation $prestation): Response
-    {
-        if ($this->isCsrfTokenValid('delete' . $prestation->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($prestation);
-            $entityManager->flush();
-        }
+        $prestataire = new Prestataire();
+        $prestation->setStatut($statutRepo->findOneById(2));
+        $prestataire->setUser($this->getUser());
+        $prestataire->setPrestation($prestationRepo->findOneById($prestation->getId()));
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($prestataire);
+        $entityManager->flush();
         return $this->redirectToRoute('prestation_attente');
     }
 }

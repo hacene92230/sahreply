@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes prestations futures
+{% endblock %}
+
+{% block body %}
+	<h1>Mes prestations futures</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Accepté le</th>
+				<th>Se termine le</th>
+				<th>voir</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for future in futures %}
+								{% if future.prestation.statut.id == 2 %}
+								<tr>
+					<td>
+						{{ future.acceptAt|date('Y-m-d') }}
+											</td>
+					<td>
+						{{ future.prestation.endAt|date('Y-m-d') }}
+					</td>
+										<td>
+						<a href="{{ path('prestataire_show', {'id': future.prestation.id}) }}">{{ future.prestation.user.firstname }}</a>
+					<a href="{{ path('prestataire_show', {'id': future.prestation.id}) }}">Généré le pdf</a>
+										</td>
+										</tr>
+{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

@@ -90,7 +90,7 @@ class AppFixtures extends Fixture
                 ->setStatut($_statut[rand(0, count($_statut) - 1)])
                 ->setType($_type[rand(0, count($_type) - 1)]);
             if ($_prestation[$l]->getStatut()->getNom() == "terminé") {
-                $_prestation[$l]->setAchieveAt($faker->dateTimeBetween('+0 days', '+12 years'));
+                $_prestation[$l]->setEndAt($faker->dateTimeBetween('+0 days', '+12 years'));
             }
             $manager->persist($_prestation[$l]);
         }

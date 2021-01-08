@@ -50,14 +50,24 @@ class Prestation
     private $statut;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $achieveAt;
-
-    /**
      * @ORM\ManyToOne(targetEntity=PrestationInstruction::class, inversedBy="prestations", cascade={"persist", "remove"})
      */
     private $instruction;
+
+    /**
+     * @ORM\OneToMany(targetEntity=prestataire::class, mappedBy="prestation")
+     */
+    private $prestataire;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $endAt;
+
+    public function __construct()
+    {
+        $this->prestataire = new ArrayCollection();
+    }
 
     /**
      /**
@@ -137,18 +147,6 @@ class Prestation
         return $this;
     }
 
-    public function getAchieveAt(): ?\DateTimeInterface
-    {
-        return $this->achieveAt;
-    }
-
-    public function setAchieveAt(?\DateTimeInterface $achieveAt): self
-    {
-        $this->achieveAt = $achieveAt;
-
-        return $this;
-    }
-
     public function getInstruction(): ?PrestationInstruction
     {
         return $this->instruction;
@@ -157,6 +155,49 @@ class Prestation
     public function setInstruction(?PrestationInstruction $instruction): self
     {
         $this->instruction = $instruction;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|prestataire[]
+     */
+    public function getPrestataire(): Collection
+    {
+        return $this->prestataire;
+    }
+
+    public function addPrestataire(prestataire $prestataire): self
+    {
+        if (!$this->prestataire->contains($prestataire)) {
+            $this->prestataire[] = $prestataire;
+            $prestataire->setPrestation($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestataire(prestataire $prestataire): self
+    {
+        if ($this->prestataire->removeElement($prestataire)) {
+            // set the owning side to null (unless already changed)
+            if ($prestataire->getPrestation() === $this) {
+                $prestataire->setPrestation(null);
+            }
+        }
+
+        return $this;
+    }
+
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(?\DateTimeInterface $endAt): self
+    {
+        $this->endAt = $endAt;
 
         return $this;
     }

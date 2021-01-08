@@ -11,6 +11,7 @@
 					{{ app.user.firstName }}
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+										<a class="dropdown-item" href="{{ path('prestataire_futur') }}">Mes futures prestations à réaliser</a>
 										<a class="dropdown-item" href="{{path('user_info', {'id': app.user.id})}}">Consulter mes informations personnelles</a>
 										<a class="dropdown-item" href="{{ path('user_edit', {'id': app.user.id}) }}">Modifier mon profil</a>
 										<a class="dropdown-item" href="{{path('app_logout')}}">Se déconnecter</a>

@@ -67,7 +67,7 @@ class User implements UserInterface
 
     /**
 
-    * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -81,9 +81,15 @@ class User implements UserInterface
      */
     private $prestation;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Prestataire::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $prestataires;
+
     public function __construct()
     {
         $this->prestation = new ArrayCollection();
+        $this->prestataires = new ArrayCollection();
     }
 
     /**
@@ -287,6 +293,36 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($prestation->getUser() === $this) {
                 $prestation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Prestataire[]
+     */
+    public function getPrestataires(): Collection
+    {
+        return $this->prestataires;
+    }
+
+    public function addPrestataire(Prestataire $prestataire): self
+    {
+        if (!$this->prestataires->contains($prestataire)) {
+            $this->prestataires[] = $prestataire;
+            $prestataire->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removePrestataire(Prestataire $prestataire): self
+    {
+        if ($this->prestataires->removeElement($prestataire)) {
+            // set the owning side to null (unless already changed)
+            if ($prestataire->getUser() === $this) {
+                $prestataire->setUser(null);
             }
         }
 

@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Prestation;
 use App\Form\PrestationFormType;
 use App\Repository\PrestationRepository;
-
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\PrestationStatutRepository;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,33 +17,39 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class PrestationController extends AbstractController
 {
+    public function __construct(PrestationRepository $prestation, PrestationStatutRepository $prestationStatut)
+    {
+        $this->prestation = $prestation;
+        $this->prestationStatut = $prestationStatut;
+    }
+
     /**
      * @Route("/fin", name="prestation_fin", methods={"GET"})
      * @Route("/cours", name="prestation_cours", methods={"GET"})
      * @Route("/attente", name="prestation_attente", methods={"GET"})
      */
-    public function index(PrestationRepository $prestationRepository, Request $request): Response
+    public function index(): Response
     {
         return $this->render('prestation/index.html.twig', [
-            'prestations' => $prestationRepository->findAll(),
+            'prestations' => $this->prestation->findAll(),
         ]);
     }
 
     /**
      * @Route("/new", name="prestation_new", methods={"GET","POST"})
      */
-    public function new(Request $request, PrestationStatutRepository $prestationRepo): Response
+    public function new(Request $request): Response
     {
-        $prestation = new Prestation();
+        $prestationNew = new Prestation();
 
-        $form = $this->createForm(PrestationFormType::class, $prestation);
+        $form = $this->createForm(PrestationFormType::class, $prestationNew);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $prestation->setStatut($prestationRepo->findOneById(1));
-            $prestation->setUser($this->getUser());
+            $prestationNew->setStatut($this->prestationStatut->findOneById(1));
+            $prestationNew->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($prestation);
+            $entityManager->persist($prestationNew);
             $entityManager->flush();
             return $this->redirectToRoute('prestation_attente');
         }
@@ -56,9 +61,9 @@ class PrestationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="prestation_show", methods={"GET"})
+     * @Route("/consulter/{id}", name="prestation_show", methods={"GET"})
      */
-    public function show(Prestation $prestation): Response
+    public function show(PRESTATION $prestation): Response
     {
         return $this->render('prestation/show.html.twig', [
             'prestation' => $prestation,

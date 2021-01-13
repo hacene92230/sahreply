@@ -3,7 +3,12 @@
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
-
+{% if is_granted('ROLE_PRESTATAIRE') %}
+										<div class="section">
+										<a class="nav-link"href="{{ path('prestataire_futur') }}">Mes futures prestations à réaliser</a>
+<a class="nav-link"href="{{path('prestataire_Prestationdisponible')}}">Quelles prestations disponibles?</a>
+{% endif %}
+</div>
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 						<li class="nav-item dropdown">
@@ -11,8 +16,7 @@
 					{{ app.user.firstName }}
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-										<a class="dropdown-item" href="{{ path('prestataire_futur') }}">Mes futures prestations à réaliser</a>
-										<a class="dropdown-item" href="{{path('user_info', {'id': app.user.id})}}">Consulter mes informations personnelles</a>
+																				<a class="dropdown-item" href="{{path('user_info', {'id': app.user.id})}}">Consulter mes informations personnelles</a>
 										<a class="dropdown-item" href="{{ path('user_edit', {'id': app.user.id}) }}">Modifier mon profil</a>
 										<a class="dropdown-item" href="{{path('app_logout')}}">Se déconnecter</a>
 {{ include('user/_delete_form.html.twig') }}
@@ -21,8 +25,6 @@
 <li class="nav-item"><a class="nav-link"href="{{path('prestation_attente')}}">Prestations en attente d'acceptation</a></li>
 <li class="nav-item"><a class="nav-link"href="{{path('prestation_fin')}}">Historique de mes prestations</a></li>
 <li class="nav-item"><a class="nav-link"href="{{path('prestation_new')}}">Demander une nouvelle prestation</a></li>
-<li class="nav-item"><a class="nav-link"href="{{path('prestataire_Prestationdisponible')}}">Quelles prestations disponibles?</a></li>
-
 </ul>
 								</div>
 			</nav>

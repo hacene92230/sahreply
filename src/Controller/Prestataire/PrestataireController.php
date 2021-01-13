@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Controller\Prestataire;
+
 use App\Wkhtml\PDFRender;
 use App\Entity\Prestation;
 use App\Entity\Prestataire;
@@ -12,10 +13,12 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Repository\PrestationStatutRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/prestataire")
+* @IsGranted("ROLE_PRESTATAIRE")
  */
 class PrestataireController extends AbstractController
 {
@@ -43,31 +46,25 @@ class PrestataireController extends AbstractController
     }
 
     /**
-     * @Route("/voir-prestation-{id}", name="prestataire_show", methods={"GET"})
+     * @Route("/consulter/{id}", name="prestataire_show", methods={"GET"})
      */
-    public function show(PDFRender $pdf, Prestation $prestation): Response
+    public function show(PRESTATION $prestation): Response
     {
         return $this->render('prestataire/prestation/show.html.twig', ['prestation' => $prestation,]);
-        return $pdf->render($html, $property->getId() . self::EXTENSION_PDF_FORMAT);
-
-
-        
     }
 
     /**
-     * @Route("-accepter-{id}", name="prestation_accepter", methods={"ACCEPTER"})
+     * @Route("-accepter-{id}", name="prestation_accepter", methods={"GET"})
      */
-    public function accepter(Request $request, PrestationStatutRepository $statutRepo, PrestationRepository $prestationRepo, Prestation $prestation): Response
+    public function accepter(PrestationStatutRepository $statutRepo, PrestationRepository $prestationRepo, REQUEST $request): Response
     {
-        if ($this->isCsrfTokenValid('accepter' . $prestation->getId(), $request->request->get('_token'))) {
-        }
         $prestataire = new Prestataire();
-        $prestation->setStatut($statutRepo->findOneById(2));
+        $prestationRepo->findOneById($request->attributes->get('_route_params'))->setStatut($statutRepo->findOneById(2));
         $prestataire->setUser($this->getUser());
-        $prestataire->setPrestation($prestationRepo->findOneById($prestation->getId()));
+        $prestataire->setPrestation($prestationRepo->findOneById($request->attributes->get('_route_params')));
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($prestataire);
         $entityManager->flush();
-        return $this->redirectToRoute('prestation_attente');
+        return $this->redirectToRoute('prestataire_futur');
     }
 }

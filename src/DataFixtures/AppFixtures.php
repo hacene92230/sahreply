@@ -42,7 +42,7 @@ class AppFixtures extends Fixture
                 $_user[0]->setRoles(["ROLE_ADMIN"]);
                 $_user[0]->setEmail("hacenesahraoui.paris@gmail.com");
             } else if ($i > 0) {
-                $_user[$i]->setRoles(["ROLE_USER"])
+                $_user[$i]->setRoles(["ROLE_CLIENT"])
                     ->setEmail("user$i@gmail.com");
             }
             $manager->persist($_user[$i]);

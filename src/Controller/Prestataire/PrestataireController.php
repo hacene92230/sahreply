@@ -2,30 +2,30 @@
 
 namespace App\Controller\Prestataire;
 
-use App\Wkhtml\PDFRender;
-use App\Entity\Prestation;
-use App\Entity\Prestataire;
-use App\Form\PrestationFormType;
-use App\Repository\PrestationRepository;
-use App\Repository\PrestataireRepository;
+use App\Entity\Prestations;
+use App\Entity\Prestataires;
+use App\Form\PrestationType;
+use App\Repository\PrestationsRepository;
+use App\Repository\PrestatairesRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\PrestationStatutRepository;
+use App\Repository\PrestationStatutsRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Knp\Snappy\Pdf;
 
 /**
  * @Route("/prestataire")
-* @IsGranted("ROLE_PRESTATAIRE")
+ * @IsGranted("ROLE_PRESTATAIRE")
  */
 class PrestataireController extends AbstractController
 {
     /**
      * @Route("/prestation-disponible", name="prestataire_Prestationdisponible", methods={"GET"})
      */
-    public function index(PrestationRepository $prestationRepository, Request $request, PaginatorInterface $paginator): Response
+    public function index(PrestationsRepository $prestationRepository, Request $request, PaginatorInterface $paginator): Response
     {
         $donnees = $prestationRepository->findByStatut(1);
         $prestation = $paginator->paginate($donnees, $request->query->getInt('page', 1), 10);
@@ -35,36 +35,46 @@ class PrestataireController extends AbstractController
     }
 
     /**
-     * @Route("/mes-prestations-futures", name="prestataire_futur", methods={"GET"})
+     * @Route("/prestations-a-realiser", name="prestataire_arealiser", methods={"GET"})
      */
-    public function prestationFutur(PrestataireRepository $prestataireRepo, Request $request): Response
+    public function prestationArealiser(PrestatairesRepository $prestataireRepo, Request $request): Response
     {
-        $futur = $prestataireRepo->findByUser($this->getUser());
-        return $this->render('prestataire/prestation/futur.html.twig', [
-            'futures' => $futur,
+        $arealiser = $prestataireRepo->findByUser($this->getUser());
+        return $this->render('prestataire/prestation/arealiser.html.twig', [
+            'realisertbl' => $arealiser,
         ]);
     }
 
     /**
      * @Route("/consulter/{id}", name="prestataire_show", methods={"GET"})
      */
-    public function show(PRESTATION $prestation): Response
+    public function show(Prestations $prestation): Response
     {
         return $this->render('prestataire/prestation/show.html.twig', ['prestation' => $prestation,]);
     }
 
     /**
-     * @Route("-accepter-{id}", name="prestation_accepter", methods={"GET"})
+     * @Route("-accepter-{id}", name="prestataire_accepter", methods={"GET"})
      */
-    public function accepter(PrestationStatutRepository $statutRepo, PrestationRepository $prestationRepo, REQUEST $request): Response
+    public function accepter(PrestationStatutsRepository $statutRepo, PrestationsRepository $prestationRepo, REQUEST $request): Response
     {
-        $prestataire = new Prestataire();
-        $prestationRepo->findOneById($request->attributes->get('_route_params'))->setStatut($statutRepo->findOneById(2));
-        $prestataire->setUser($this->getUser());
-        $prestataire->setPrestation($prestationRepo->findOneById($request->attributes->get('_route_params')));
+        $prestataire = new Prestataires();
+        $prestationRepo->findOneById($request->attributes->get('_route_params')['id'])->setStatut($statutRepo->findOneById(2));
+        $prestataire->setUser($this->getUser())
+        ->setPrestation($prestationRepo->findOneById($request->attributes->get('_route_params')["id"]))
+        ->setAcceptAt(new \DateTime());
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($prestataire);
         $entityManager->flush();
-        return $this->redirectToRoute('prestataire_futur');
+        return $this->redirectToRoute('prestataire_arealiser');
+    }
+
+    /**
+     * @Route("-create-pdf-{id}", name="prestataire_prestationPdfCreate", methods={"GET"})
+     */
+    public function pdfCreate()
+    {
+        $snappy = new Pdf('/usr/local/bin/wkhtmltopdf');
+        $snappy->generateFromHtml('<h1>Bill</h1><p>You owe me money, dude.</p>', '/tmp/bill-123.pdf');
     }
 }

@@ -1,9 +1,10 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes prestations
+{% block title %}Mes prestations {{ parent() }}
 {% endblock %}
 
 {% block body %}
+	
 	{% if app.request.attributes.get('_route') == "prestation_attente" %}
 		<h1>Prestations en attente d'acceptations</h1>
 		<table class="table">

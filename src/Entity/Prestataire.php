@@ -2,17 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\PrestataireRepository;
+use App\Repository\PrestatairesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
- * @ORM\Entity(repositoryClass=PrestataireRepository::class)
- * @ORM\HasLifecycleCallbacks 
+ * @ORM\Entity(repositoryClass=PrestatairesRepository::class)
  */
-class Prestataire
+class Prestataires
 {
     /**
      * @ORM\Id
@@ -37,20 +35,6 @@ class Prestataire
      * @ORM\JoinColumn(nullable=false)
      */
     private $prestation;
-
-    /**
-     /**
-     * @ORM\PrePersist
-     *
-     * @return void
-     */
-    public function initialize()
-    {
-        if (empty($this->acceptAt)) {
-            $this->acceptAt = new \DateTime();
-        }
-    }
-
     public function getId(): ?int
     {
         return $this->id;

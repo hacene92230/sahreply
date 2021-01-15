@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Prestation;
-use App\Form\PrestationFormType;
-use App\Repository\PrestationRepository;
+use App\Entity\Prestations;
+use App\Form\PrestationType;
+use App\Repository\PrestationsRepository;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\PrestationStatutRepository;
+use App\Repository\PrestationStatutsRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -17,7 +17,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class PrestationController extends AbstractController
 {
-    public function __construct(PrestationRepository $prestation, PrestationStatutRepository $prestationStatut)
+    public function __construct(PrestationsRepository $prestation, PrestationStatutsRepository $prestationStatut)
     {
         $this->prestation = $prestation;
         $this->prestationStatut = $prestationStatut;
@@ -40,16 +40,16 @@ class PrestationController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $prestationNew = new Prestation();
+        $prestation = new Prestations();
 
-        $form = $this->createForm(PrestationFormType::class, $prestationNew);
+        $form = $this->createForm(PrestationType::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $prestationNew->setStatut($this->prestationStatut->findOneById(1));
-            $prestationNew->setUser($this->getUser());
+            $prestation->setStatut($this->prestationStatut->findOneById(1));
+            $prestation->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($prestationNew);
+            $entityManager->persist($prestation);
             $entityManager->flush();
             return $this->redirectToRoute('prestation_attente');
         }
@@ -63,7 +63,7 @@ class PrestationController extends AbstractController
     /**
      * @Route("/consulter/{id}", name="prestation_show", methods={"GET"})
      */
-    public function show(PRESTATION $prestation): Response
+    public function show(Prestations $prestation): Response
     {
         return $this->render('prestation/show.html.twig', [
             'prestation' => $prestation,
@@ -73,9 +73,9 @@ class PrestationController extends AbstractController
     /**
      * @Route("/{id}/edit", name="prestation_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Prestation $prestation): Response
+    public function edit(Request $request, Prestations $prestation): Response
     {
-        $form = $this->createForm(PrestationFormType::class, $prestation);
+        $form = $this->createForm(PrestationType::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -93,7 +93,7 @@ class PrestationController extends AbstractController
     /**
      * @Route("/{id}", name="prestation_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Prestation $prestation): Response
+    public function delete(Request $request, Prestations $prestation): Response
     {
         if ($this->isCsrfTokenValid('delete' . $prestation->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

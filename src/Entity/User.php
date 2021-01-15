@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\UserRepository;
+use App\Repository\UsersRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,11 +11,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
- * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ORM\Entity(repositoryClass=UsersRepository::class)
  * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec cet e-mail")
- * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface
+class Users implements UserInterface
 {
     /**
      * @ORM\Id
@@ -90,18 +89,6 @@ class User implements UserInterface
     {
         $this->prestation = new ArrayCollection();
         $this->prestataires = new ArrayCollection();
-    }
-
-    /**
-     /**
-     * perrmet d'initialiser un slug
-     * @ORM\PrePersist
-     *
-     * @return void
-     */
-    public function initialize()
-    {
-        //records the current date when a loan is created 
         if (empty($this->createdAt)) {
             $this->createdAt = new \DateTime();
         }

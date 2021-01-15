@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes prestations à réaliser
+{{ parent() }} {% endblock %}
+
+{% block body %}
+	<h1>Mes prestations à réaliser</h1>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Accepté le</th>
+				<th>Se termine le</th>
+				<th>voir</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for realiser in realisertbl %}
+								{% if realiser.prestation.statut.id == 2 %}
+								<tr>
+					<td>
+						{{ realiser.acceptAt|date('Y-m-d') }}
+											</td>
+					<td>
+						{{ realiser.prestation.endAt|date('Y-m-d') }}
+					</td>
+										<td>
+						<a href="{{ path('prestataire_show', {'id': realiser.prestation.id}) }}">{{ realiser.prestation.user.firstname }}</a>
+					<a href="{{ path('prestataire_prestationPdfCreate', {'id': realiser.prestation.id}) }}">Généré le pdf</a>
+										</td>
+										</tr>
+{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

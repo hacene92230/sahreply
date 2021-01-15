@@ -13,7 +13,7 @@ class PrestationInstructionFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('contenu', TextareaType::class)
+            ->add('contenu', TextareaType::class, ['label' => "instruction"])
         ;
     }
 

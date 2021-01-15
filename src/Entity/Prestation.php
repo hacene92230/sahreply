@@ -3,16 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\PrestationRepository;
+use App\Repository\PrestationsRepository;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass=PrestationRepository::class)
- * @ORM\HasLifecycleCallbacks
+ * @ORM\Entity(repositoryClass=PrestationsRepository::class)
  */
-class Prestation
+class Prestations
 {
     /**
      * @ORM\Id
@@ -50,11 +48,6 @@ class Prestation
     private $statut;
 
     /**
-     * @ORM\ManyToOne(targetEntity=PrestationInstruction::class, inversedBy="prestations", cascade={"persist", "remove"})
-     */
-    private $instruction;
-
-    /**
      * @ORM\OneToMany(targetEntity=prestataire::class, mappedBy="prestation")
      */
     private $prestataire;
@@ -64,19 +57,14 @@ class Prestation
      */
     private $endAt;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Instruction::class, cascade={"persist", "remove"})
+     */
+    private $instruction;
+
     public function __construct()
     {
         $this->prestataire = new ArrayCollection();
-    }
-
-    /**
-     /**
-     * @ORM\PrePersist
-     *
-     * @return void
-     */
-    public function initialize()
-    {
         if (empty($this->createdAt)) {
             $this->createdAt = new \DateTime();
         }
@@ -147,18 +135,6 @@ class Prestation
         return $this;
     }
 
-    public function getInstruction(): ?PrestationInstruction
-    {
-        return $this->instruction;
-    }
-
-    public function setInstruction(?PrestationInstruction $instruction): self
-    {
-        $this->instruction = $instruction;
-
-        return $this;
-    }
-
     /**
      * @return Collection|prestataire[]
      */
@@ -198,6 +174,18 @@ class Prestation
     public function setEndAt(?\DateTimeInterface $endAt): self
     {
         $this->endAt = $endAt;
+
+        return $this;
+    }
+
+    public function getInstruction(): ?Instruction
+    {
+        return $this->instruction;
+    }
+
+    public function setInstruction(?Instruction $instruction): self
+    {
+        $this->instruction = $instruction;
 
         return $this;
     }

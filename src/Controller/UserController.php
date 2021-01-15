@@ -2,9 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Form\RegistrationFormType;
-use App\Repository\UserRepository;
+use App\Entity\Users;
+use App\Form\UserType;
+use App\Form\RegistrationType;
+use App\Repository\UsersRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,9 +22,9 @@ class UserController extends AbstractController
     /**
      * @Route("/account/{id}", name="user_info", methods={"GET"})
      */
-    public function userShow(User $user): Response
+    public function userShow(Users $user): Response
     {
-        if ($this->getUser() == $user) {
+        if ($this->getUser() === $user) {
             return $this->render('user/show.html.twig', [
                 'user' => $user,
             ]);
@@ -37,15 +38,15 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function userEdit(UserPasswordEncoderInterface $encoder, Request $request, User $user): Response
+    public function userEdit(UserPasswordEncoderInterface $encoder, Request $request, UserS $user): Response
     {
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
         if ($this->getUser() == $user) {
             if ($form->isSubmitted() && $form->isValid()) {
                 //Permet de crypter le mot de passe
                 $mdp = $encoder->encodePassword($user, $form->get('plainPassword')->getData());
-                //Envoi le mot de passe crypté
+                //Envoi le mot de passe hashé                
                 $user->setPassword($mdp);
                 $this->getDoctrine()->getManager()->flush();
                 return $this->redirectToRoute('home');
@@ -65,15 +66,13 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, User $user): Response
+    public function delete(Request $request, Users $user): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
         }
-        $session = new Session();
-        $session->invalidate();
         return $this->redirectToRoute('app_logout');
     }
 }

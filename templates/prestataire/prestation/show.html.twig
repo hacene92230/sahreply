@@ -3,7 +3,7 @@
 {% block title %}
 	prestations du
 	{{ prestation.createdAt|date('d-m-Y') }}
-{% endblock %}
+{{ parent() }} {% endblock %}
 
 {% block body %}
 	<h1>Prestation demander par

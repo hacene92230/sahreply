@@ -2,26 +2,24 @@
 
 namespace App\Form;
 
-use App\Entity\Prestataire;
+use App\Entity\Instruction;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PrestataireType extends AbstractType
+class PrestationInstructionType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('acceptAt')
-            ->add('user')
-            ->add('prestation')
+            ->add('contenu')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => Prestataire::class,
+            'data_class' => Instruction::class,
         ]);
     }
 }

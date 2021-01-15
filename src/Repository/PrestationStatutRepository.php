@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\PrestationStatut;
+use App\Entity\PrestationStatuts;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -12,11 +12,11 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Statut[]    findAll()
  * @method Statut[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class PrestationStatutRepository extends ServiceEntityRepository
+class PrestationStatutsRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, PrestationStatut::class);
+        parent::__construct($registry, PrestationStatuts::class);
     }
 
     // /**

@@ -65,9 +65,7 @@ class Prestation
     public function __construct()
     {
         $this->prestataire = new ArrayCollection();
-        if (empty($this->createdAt)) {
-            $this->createdAt = new \DateTime();
-        }
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int

@@ -5,7 +5,7 @@ namespace App\Controller\Prestataire;
 use App\Entity\Prestation;
 use App\Entity\Prestataire;
 use App\Form\PrestationType;
-use App\Repository\PrestationsRepository;
+use App\Repository\PrestationRepository;
 use App\Repository\PrestataireRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,7 +25,7 @@ class PrestataireController extends AbstractController
     /**
      * @Route("/prestation-disponible", name="prestataire_Prestationdisponible", methods={"GET"})
      */
-    public function index(PrestationsRepository $prestationRepository, Request $request, PaginatorInterface $paginator): Response
+    public function index(PrestationRepository $prestationRepository, Request $request, PaginatorInterface $paginator): Response
     {
         $donnees = $prestationRepository->findByStatut(1);
         $prestation = $paginator->paginate($donnees, $request->query->getInt('page', 1), 10);
@@ -56,9 +56,9 @@ class PrestataireController extends AbstractController
     /**
      * @Route("-accepter-{id}", name="prestataire_accepter", methods={"GET"})
      */
-    public function accepter(PrestationStatutRepository $statutRepo, PrestationsRepository $prestationRepo, REQUEST $request): Response
+    public function accepter(PrestationStatutRepository $statutRepo, PrestationRepository $prestationRepo, REQUEST $request): Response
     {
-        $prestataire = new Prestataires();
+        $prestataire = new Prestataire();
         $prestationRepo->findOneById($request->attributes->get('_route_params')['id'])->setStatut($statutRepo->findOneById(2));
         $prestataire->setUser($this->getUser())
         ->setPrestation($prestationRepo->findOneById($request->attributes->get('_route_params')["id"]))

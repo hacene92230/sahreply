@@ -31,7 +31,7 @@ class PrestationController extends AbstractController
     public function index(): Response
     {
         return $this->render('prestation/index.html.twig', [
-            'Prestation' => $this->prestation->findAll(),
+            'prestations' => $this->prestation->findAll(),
         ]);
     }
 

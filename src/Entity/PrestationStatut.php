@@ -34,7 +34,6 @@ class PrestationStatut
         $this->prestations = new ArrayCollection();
     }
 
-
     public function getId(): ?int
     {
         return $this->id;

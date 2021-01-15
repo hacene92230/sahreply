@@ -3,14 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\PrestationsRepository;
+use App\Repository\PrestationRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity(repositoryClass=PrestationsRepository::class)
+ * @ORM\Entity(repositoryClass=PrestationRepository::class)
  */
-class Prestations
+class Prestation
 {
     /**
      * @ORM\Id

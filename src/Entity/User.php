@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\UsersRepository;
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -11,10 +11,10 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 
 /**
- * @ORM\Entity(repositoryClass=UsersRepository::class)
+ * @ORM\Entity(repositoryClass=UserRepository::class)
  * @UniqueEntity(fields={"email"}, message="Il existe déjà un compte avec cet e-mail")
  */
-class Users implements UserInterface
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -89,9 +89,7 @@ class Users implements UserInterface
     {
         $this->prestation = new ArrayCollection();
         $this->prestataires = new ArrayCollection();
-        if (empty($this->createdAt)) {
-            $this->createdAt = new \DateTime();
-        }
+        $this->createdAt = new \DateTime();
     }
 
     public function getId(): ?int

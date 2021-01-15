@@ -2,14 +2,14 @@
 
 namespace App\Controller\Prestataire;
 
-use App\Entity\Prestations;
-use App\Entity\Prestataires;
+use App\Entity\Prestation;
+use App\Entity\Prestataire;
 use App\Form\PrestationType;
 use App\Repository\PrestationsRepository;
-use App\Repository\PrestatairesRepository;
+use App\Repository\PrestataireRepository;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\PrestationStatutsRepository;
+use App\Repository\PrestationStatutRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -37,7 +37,7 @@ class PrestataireController extends AbstractController
     /**
      * @Route("/prestations-a-realiser", name="prestataire_arealiser", methods={"GET"})
      */
-    public function prestationArealiser(PrestatairesRepository $prestataireRepo, Request $request): Response
+    public function prestationArealiser(PrestataireRepository $prestataireRepo, Request $request): Response
     {
         $arealiser = $prestataireRepo->findByUser($this->getUser());
         return $this->render('prestataire/prestation/arealiser.html.twig', [
@@ -48,7 +48,7 @@ class PrestataireController extends AbstractController
     /**
      * @Route("/consulter/{id}", name="prestataire_show", methods={"GET"})
      */
-    public function show(Prestations $prestation): Response
+    public function show(Prestation $prestation): Response
     {
         return $this->render('prestataire/prestation/show.html.twig', ['prestation' => $prestation,]);
     }
@@ -56,7 +56,7 @@ class PrestataireController extends AbstractController
     /**
      * @Route("-accepter-{id}", name="prestataire_accepter", methods={"GET"})
      */
-    public function accepter(PrestationStatutsRepository $statutRepo, PrestationsRepository $prestationRepo, REQUEST $request): Response
+    public function accepter(PrestationStatutRepository $statutRepo, PrestationsRepository $prestationRepo, REQUEST $request): Response
     {
         $prestataire = new Prestataires();
         $prestationRepo->findOneById($request->attributes->get('_route_params')['id'])->setStatut($statutRepo->findOneById(2));

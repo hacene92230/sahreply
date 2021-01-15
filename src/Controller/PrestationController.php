@@ -2,11 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Prestations;
+use App\Entity\Prestation;
 use App\Form\PrestationType;
-use App\Repository\PrestationsRepository;
+use App\Repository\PrestationRepository;
 use Symfony\Component\HttpFoundation\Request;
-use App\Repository\PrestationStatutsRepository;
+use App\Repository\PrestationStatutRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -17,10 +17,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class PrestationController extends AbstractController
 {
-    public function __construct(PrestationsRepository $prestation, PrestationStatutsRepository $prestationStatut)
+    public function __construct(PrestationRepository $prestation, PrestationStatutRepository $Prestationtatut)
     {
         $this->prestation = $prestation;
-        $this->prestationStatut = $prestationStatut;
+        $this->Prestationtatut = $Prestationtatut;
     }
 
     /**
@@ -31,7 +31,7 @@ class PrestationController extends AbstractController
     public function index(): Response
     {
         return $this->render('prestation/index.html.twig', [
-            'prestations' => $this->prestation->findAll(),
+            'Prestation' => $this->prestation->findAll(),
         ]);
     }
 
@@ -40,13 +40,13 @@ class PrestationController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $prestation = new Prestations();
+        $prestation = new Prestation();
 
         $form = $this->createForm(PrestationType::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $prestation->setStatut($this->prestationStatut->findOneById(1));
+            $prestation->setStatut($this->Prestationtatut->findOneById(1));
             $prestation->setUser($this->getUser());
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($prestation);
@@ -63,7 +63,7 @@ class PrestationController extends AbstractController
     /**
      * @Route("/consulter/{id}", name="prestation_show", methods={"GET"})
      */
-    public function show(Prestations $prestation): Response
+    public function show(Prestation $prestation): Response
     {
         return $this->render('prestation/show.html.twig', [
             'prestation' => $prestation,
@@ -73,7 +73,7 @@ class PrestationController extends AbstractController
     /**
      * @Route("/{id}/edit", name="prestation_edit", methods={"GET","POST"})
      */
-    public function edit(Request $request, Prestations $prestation): Response
+    public function edit(Request $request, Prestation $prestation): Response
     {
         $form = $this->createForm(PrestationType::class, $prestation);
         $form->handleRequest($request);
@@ -93,7 +93,7 @@ class PrestationController extends AbstractController
     /**
      * @Route("/{id}", name="prestation_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Prestations $prestation): Response
+    public function delete(Request $request, Prestation $prestation): Response
     {
         if ($this->isCsrfTokenValid('delete' . $prestation->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

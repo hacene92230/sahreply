@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Entity\Users;
+use App\Entity\User;
 use App\Form\UserType;
 use App\Form\RegistrationType;
-use App\Repository\UsersRepository;
+use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,7 +22,7 @@ class UserController extends AbstractController
     /**
      * @Route("/account/{id}", name="user_info", methods={"GET"})
      */
-    public function userShow(Users $user): Response
+    public function userShow(User $user): Response
     {
         if ($this->getUser() === $user) {
             return $this->render('user/show.html.twig', [
@@ -66,7 +66,7 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      */
-    public function delete(Request $request, Users $user): Response
+    public function delete(Request $request, User $user): Response
     {
         if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

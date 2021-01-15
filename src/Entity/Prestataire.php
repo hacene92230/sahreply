@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\PrestatairesRepository;
+use App\Repository\PrestataireRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=PrestatairesRepository::class)
+ * @ORM\Entity(repositoryClass=PrestataireRepository::class)
  */
-class Prestataires
+class Prestataire
 {
     /**
      * @ORM\Id

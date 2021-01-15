@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\PrestationStatutsRepository;
+use App\Repository\PrestationStatutRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=PrestationStatutsRepository::class)
+ * @ORM\Entity(repositoryClass=PrestationStatutRepository::class)
  */
-class PrestationStatuts
+class PrestationStatut
 {
     /**
      * @ORM\Id

@@ -75,7 +75,7 @@ class PrestationController extends AbstractController
      */
     public function edit(Request $request, Prestation $prestation): Response
     {
-        $form = $this->createForm(PrestationTypes::class, $prestation);
+        $form = $this->createForm(PrestationTypess::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

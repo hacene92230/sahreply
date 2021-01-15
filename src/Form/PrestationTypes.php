@@ -7,7 +7,7 @@ use App\Entity\Prestation;
 use App\Entity\PrestationInstruction;
 use App\Entity\PrestationStatut;
 use Symfony\Component\Form\AbstractType;
-use App\Form\PrestationInstructionType;
+use App\Form\PrestationInstructionsTypes;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,7 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
-class PrestationType extends AbstractType
+class PrestationTypes extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

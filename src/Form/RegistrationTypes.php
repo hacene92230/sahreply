@@ -16,7 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 
-class RegistrationType extends AbstractType
+class RegistrationTypes extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Prestation;
-use App\Form\PrestationType;
+use App\Form\PrestationTypes;
 use App\Repository\PrestationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\PrestationStatutRepository;
@@ -42,7 +42,7 @@ class PrestationController extends AbstractController
     {
         $prestation = new Prestation();
 
-        $form = $this->createForm(PrestationType::class, $prestation);
+        $form = $this->createForm(PrestationTypes::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -75,7 +75,7 @@ class PrestationController extends AbstractController
      */
     public function edit(Request $request, Prestation $prestation): Response
     {
-        $form = $this->createForm(PrestationType::class, $prestation);
+        $form = $this->createForm(PrestationTypes::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
-use App\Form\RegistrationType;
+use App\Form\UserTypes;
+use App\Form\RegistrationTypes;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -40,7 +40,7 @@ class UserController extends AbstractController
      */
     public function userEdit(UserPasswordEncoderInterface $encoder, Request $request, UserS $user): Response
     {
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(UserTypes::class, $user);
         $form->handleRequest($request);
         if ($this->getUser() == $user) {
             if ($form->isSubmitted() && $form->isValid()) {

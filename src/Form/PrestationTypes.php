@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Prestation;
 use App\Entity\PrestationType;
 use App\Entity\PrestationStatut;
+use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -21,7 +22,8 @@ class PrestationTypes extends AbstractType
             ->add('nbheure', IntegerType::class, ['label' => 'Nombre d\'heure'])
             ->add('type', EntityType::class, ['label' => "De quelle prestation avez-vous besoin", 'class' => PrestationType::class, 'choice_label' => "nom"])
             ->add("endat", DateType::class, [
-                'label' => "à quelle datte la prestation doit avoir lieu", 'widget' => 'single_text',
+                'label' => "à quelle datte la prestation doit avoir lieu",
+                'widget' => 'single_text',
             ])
             ->add('instruction', TextareaType::class, ['label' => "Instruction concernant la prestation", 'required' => false]);
     }

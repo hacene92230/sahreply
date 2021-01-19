@@ -7,6 +7,7 @@ use App\Form\PrestationTypes;
 use App\Repository\PrestationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\PrestationStatutRepository;
+use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -43,6 +44,7 @@ class PrestationController extends AbstractController
     public function new(Request $request): Response
     {
         $prestation = new Prestation();
+        $prestation->setEndat(new DateTime());
         $form = $this->createForm(PrestationTypes::class, $prestation);
         $form->handleRequest($request);
 

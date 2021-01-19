@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserTypes;
-use App\Form\RegistrationTypes;
 use App\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -38,13 +37,13 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      */
-    public function userEdit(UserPasswordEncoderInterface $encoder, Request $request, UserS $user): Response
+    public function userEdit(UserPasswordEncoderInterface $encoder, Request $request, User $user): Response
     {
         $form = $this->createForm(UserTypes::class, $user);
         $form->handleRequest($request);
         if ($this->getUser() == $user) {
             if ($form->isSubmitted() && $form->isValid()) {
-                //Permet de crypter le mot de passe
+                //Permet de hashé le mot de passe
                 $mdp = $encoder->encodePassword($user, $form->get('plainPassword')->getData());
                 //Envoi le mot de passe hashé                
                 $user->setPassword($mdp);

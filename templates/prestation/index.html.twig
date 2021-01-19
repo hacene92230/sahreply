@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-	
+	<main>
 	{% if app.request.attributes.get('_route') == "prestation_attente" %}
 		<h1>Prestations en attente d'acceptations</h1>
 		<table class="table">
@@ -97,4 +97,5 @@
 			</tbody>
 		</table>
 	{% endif %}
+</main>
 {% endblock %}

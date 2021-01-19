@@ -3,51 +3,65 @@
 namespace App\Form;
 
 use App\Entity\User;
-use DateTime;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\IsTrue;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\TelType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
-use Symfony\Component\Form\Extension\Core\Type\CountryType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UserTypes extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('roles', ChoiceType::class, [
-                'choices' => [
-                    'Utilisateur' => 'ROLE_USER',
-                    'Benevol' => 'ROLE_VOLONTEER',
-                    'Gestionnaire' => 'ROLE_AGENT',
-                    'Administrateurr' => 'ROLE_ADMIN',
+            ->add(
+                'email',
+                EmailType::class,
+                ['label' => 'Adresse Email']
+            )
+            ->add(
+                'firstName',
+                TextType::class,
+                ['label' => 'Prénom']
+            )
+            ->add(
+                'lastName',
+                TextType::class,
+                ['label' => 'Nom']
+            )
 
-                ],
+            ->add(
+                'phone',
+                TextType::class,
+                ['label' => 'Portable']
+            )
 
-                'expanded' => false,
-                'multiple' => true,
-                //'choice_label' => ,
-                //'choice_value' => ,
-                'label' => 'Rôles',
-            ])
+            ->add(
+                'address',
+                TextType::class,
+                ['label' => 'Adresse']
+            )
+            ->add(
+                'postalCode',
+                NumberType::class,
+                ['label' => 'Code postal']
+            )
+            ->add(
+                'city',
+                TextType::class,
+                ['label' => 'Ville']
+            )
 
-            ->add('lastname', TextType::class)
-            ->add('address')
-            ->add('postalcode', NumberType::class)
-            ->add('city', CountryType::class)
-            ->add('phone', TelType::class)
-            ->add('email', EmailType::class)
-            ->add('password', RepeatedType::class, [
+            ->add('plainPassword', RepeatedType::class, [
+                'mapped' => false,
                 'type' => PasswordType::class,
-                'required' => false,
-                'help' => 'Tapez votre mot de passe',
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Confirmez le mot de passe'],
             ]);

@@ -1,9 +1,9 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}Demander une prestation{% endblock %}
-
 {% block body %}
-    <h1>Demander une prestation</h1>
-<a href="{{ path('prestation_attente') }}">retour à mes prestations en attente d'acceptation</a>
-    {{ include('prestation/_form.html.twig') }}
+		<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Réservé une prestation
+				</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+<p>Réserver une prestation</p>
+{{ include('prestation/_form.html.twig') }}
+    				</div>
     {% endblock %}

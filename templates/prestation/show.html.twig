@@ -6,6 +6,7 @@
 {{ parent() }} {% endblock %}
 
 {% block body %}
+<main>
 	<h1>Prestation demander par
 		{{ prestation.user.firstname }}
 		le
@@ -40,9 +41,10 @@
 {% if prestation.instruction is null %}
 				<td>Aucune instruction n'a été fournie pour cette prestation</td>
 			{% else %}
-		<td>{{ prestation.instruction.contenu }}</td>	
+		<td>{{ prestation.instruction }}</td>	
 			{% endif %}
 			</tr>
 		</tbody>
 	</table>
+</main>
 {% endblock %}

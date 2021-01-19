@@ -3,6 +3,7 @@
 {% block title %}Mes informations personnelles {{ parent() }} {% endblock %}
 
 {% block body %}
+    <main>
     <h1>Mes informations</h1>
     <a href="{{ path('home') }}">Accueil</a>
     <table class="table">
@@ -53,4 +54,5 @@
             </tr>
         </tbody>
     </table>
+</main>
 {% endblock %}

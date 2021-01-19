@@ -53,12 +53,12 @@ class Prestation
     private $prestataire;
 
     /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(type="datetime")
      */
     private $endAt;
 
     /**
-     * @ORM\OneToOne(targetEntity=Instruction::class, cascade={"persist", "remove"})
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $instruction;
 
@@ -176,12 +176,12 @@ class Prestation
         return $this;
     }
 
-    public function getInstruction(): ?Instruction
+    public function getInstruction(): ?string
     {
         return $this->instruction;
     }
 
-    public function setInstruction(?Instruction $instruction): self
+    public function setInstruction(?string $instruction): self
     {
         $this->instruction = $instruction;
 

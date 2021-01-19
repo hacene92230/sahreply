@@ -10,10 +10,12 @@ use App\Repository\PrestationStatutRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/prestation")
+ * @IsGranted("ROLE_CLIENT")
  */
 class PrestationController extends AbstractController
 {
@@ -41,7 +43,6 @@ class PrestationController extends AbstractController
     public function new(Request $request): Response
     {
         $prestation = new Prestation();
-
         $form = $this->createForm(PrestationTypes::class, $prestation);
         $form->handleRequest($request);
 
@@ -75,7 +76,7 @@ class PrestationController extends AbstractController
      */
     public function edit(Request $request, Prestation $prestation): Response
     {
-        $form = $this->createForm(PrestationTypess::class, $prestation);
+        $form = $this->createForm(PrestationTypes::class, $prestation);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

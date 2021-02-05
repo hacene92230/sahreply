@@ -2,12 +2,12 @@
 
 namespace App\Controller;
 
+use DateTime;
 use App\Entity\Prestation;
 use App\Form\PrestationTypes;
 use App\Repository\PrestationRepository;
 use Symfony\Component\HttpFoundation\Request;
 use App\Repository\PrestationStatutRepository;
-use DateTime;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -16,7 +16,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
  * @Route("/prestation")
- * @IsGranted("ROLE_CLIENT")
  */
 class PrestationController extends AbstractController
 {
@@ -30,6 +29,8 @@ class PrestationController extends AbstractController
      * @Route("/fin", name="prestation_fin", methods={"GET"})
      * @Route("/cours", name="prestation_cours", methods={"GET"})
      * @Route("/attente", name="prestation_attente", methods={"GET"})
+     * @IsGranted("ROLE_CLIENT")
+
      */
     public function index(): Response
     {
@@ -57,7 +58,7 @@ class PrestationController extends AbstractController
             return $this->redirectToRoute('prestation_attente');
         }
 
-        return $this->render('prestation/new.html.twig', [
+        return $this->render("prestation/new.html.twig", [
             'prestation' => $prestation,
             'form' => $form->createView(),
         ]);
@@ -65,6 +66,8 @@ class PrestationController extends AbstractController
 
     /**
      * @Route("/consulter/{id}", name="prestation_show", methods={"GET"})
+     * @IsGranted("ROLE_CLIENT")
+
      */
     public function show(Prestation $prestation): Response
     {
@@ -75,6 +78,8 @@ class PrestationController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="prestation_edit", methods={"GET","POST"})
+     * @IsGranted("ROLE_CLIENT")
+
      */
     public function edit(Request $request, Prestation $prestation): Response
     {
@@ -95,6 +100,8 @@ class PrestationController extends AbstractController
 
     /**
      * @Route("/{id}", name="prestation_delete", methods={"DELETE"})
+     * @IsGranted("ROLE_CLIENT")
+
      */
     public function delete(Request $request, Prestation $prestation): Response
     {

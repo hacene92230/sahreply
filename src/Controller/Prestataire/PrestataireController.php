@@ -61,8 +61,8 @@ class PrestataireController extends AbstractController
         $prestataire = new Prestataire();
         $prestationRepo->findOneById($request->attributes->get('_route_params')['id'])->setStatut($statutRepo->findOneById(2));
         $prestataire->setUser($this->getUser())
-        ->setPrestation($prestationRepo->findOneById($request->attributes->get('_route_params')["id"]))
-        ->setAcceptAt(new \DateTime());
+            ->setPrestation($prestationRepo->findOneById($request->attributes->get('_route_params')["id"]))
+            ->setAcceptAt(new \DateTime());
         $entityManager = $this->getDoctrine()->getManager();
         $entityManager->persist($prestataire);
         $entityManager->flush();

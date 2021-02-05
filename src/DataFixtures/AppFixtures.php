@@ -88,10 +88,12 @@ class AppFixtures extends Fixture
                 ->setNbheure($faker->numberBetween(1, 11))
                 ->setUser($_user[rand(0, count($_user) - 1)])
                 ->setStatut($_statut[rand(0, count($_statut) - 1)])
-                ->setType($_type[rand(0, count($_type) - 1)]);
-            if ($_prestation[$l]->getStatut()->getNom() == "terminé") {
-                $_prestation[$l]->setEndAt($faker->dateTimeBetween('+0 days', '+12 years'));
-            }
+                ->setType($_type[rand(0, count($_type) - 1)])
+                ->setAddress($faker->address)
+                ->setCity($faker->city)
+                ->setPostalCode($faker->numberBetween(10000, 98000))
+                               ->setEndAt($faker->dateTimeBetween('+0 days', '+12 years'));
+        
             $manager->persist($_prestation[$l]);
         }
         $manager->flush();

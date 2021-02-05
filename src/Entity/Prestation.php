@@ -62,6 +62,21 @@ class Prestation
      */
     private $instruction;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $address;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $postalcode;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $city;
+
     public function __construct()
     {
         $this->prestataire = new ArrayCollection();
@@ -184,6 +199,42 @@ class Prestation
     public function setInstruction(?string $instruction): self
     {
         $this->instruction = $instruction;
+
+        return $this;
+    }
+
+    public function getAddress(): ?string
+    {
+        return $this->address;
+    }
+
+    public function setAddress(string $address): self
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getPostalcode(): ?string
+    {
+        return $this->postalcode;
+    }
+
+    public function setPostalcode(string $postalcode): self
+    {
+        $this->postalcode = $postalcode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

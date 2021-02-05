@@ -11,9 +11,11 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * @Route("/user")
+ @IsGranted("ROLE_CLIENT")
  */
 class UserController extends AbstractController
 {
@@ -43,6 +45,9 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($this->getUser() == $user) {
             if ($form->isSubmitted() && $form->isValid()) {
+                var_dump($request->files);
+                die();
+
                 //Permet de hashé le mot de passe
                 $mdp = $encoder->encodePassword($user, $form->get('plainPassword')->getData());
                 //Envoi le mot de passe hashé                

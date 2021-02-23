@@ -22,7 +22,6 @@ class UserTypes extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add("test", FileType::class, ['mapped' => false])
             ->add(
                 'email',
                 EmailType::class,

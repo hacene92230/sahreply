@@ -50,12 +50,17 @@ class PrestationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $prestation->setStatut($this->Prestationtatut->findOneById(1));
-            $prestation->setUser($this->getUser());
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($prestation);
-            $entityManager->flush();
-            return $this->redirectToRoute('prestation_attente');
+            return $this->render("prestation/devis.html.twig", [
+                'prestation' => $prestation,]);
+        
+            
+
+            //$prestation->setStatut($this->Prestationtatut->findOneById(1));
+            //$prestation->setUser($this->getUser());
+            //$entityManager = $this->getDoctrine()->getManager();
+            //$entityManager->persist($prestation);
+            //$entityManager->flush();
+            //return $this->redirectToRoute('prestation_attente');
         }
 
         return $this->render("prestation/new.html.twig", [

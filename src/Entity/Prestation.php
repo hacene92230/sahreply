@@ -48,7 +48,7 @@ class Prestation
     private $statut;
 
     /**
-     * @ORM\OneToMany(targetEntity=prestataire::class, mappedBy="prestation")
+     * @ORM\OneToMany(targetEntity=Prestataire::class, mappedBy="Prestation")
      */
     private $prestataire;
 

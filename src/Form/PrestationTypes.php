@@ -22,7 +22,10 @@ class PrestationTypes extends AbstractType
     {
         $builder
             ->add('nbheure', IntegerType::class, [
-                'attr' => ['placeholder' => "Durée de la prestation"],
+                'attr' => [
+                    'placeholder' => "Durée de la prestation",
+                    "min" => 0, "max" => 72, "value" => 1
+                ],
                 'label' => 'Durant combien de temps la prestation doit avoir lieu'
             ])
 

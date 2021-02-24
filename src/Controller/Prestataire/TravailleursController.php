@@ -26,7 +26,7 @@ class TravailleursController extends AbstractController
         }
 
         return $this->render('travailleurs/index.html.twig', [
-            'travailleur' => $form->createView(),
+            'form' => $form->createView(),
         ]);
     }
 }

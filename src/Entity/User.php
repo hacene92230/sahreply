@@ -85,6 +85,11 @@ class User implements UserInterface
      */
     private $prestataires;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Demande::class, mappedBy="user", cascade={"persist", "remove"})
+     */
+    private $demande;
+
     public function __construct()
     {
         $this->prestation = new ArrayCollection();
@@ -310,6 +315,23 @@ class User implements UserInterface
                 $prestataire->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDemande(): ?Demande
+    {
+        return $this->demande;
+    }
+
+    public function setDemande(Demande $demande): self
+    {
+        // set the owning side of the relation if necessary
+        if ($demande->getUser() !== $this) {
+            $demande->setUser($this);
+        }
+
+        $this->demande = $demande;
 
         return $this;
     }

@@ -34,9 +34,15 @@ class PrestationType
      */
     private $prestations;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Demande::class, mappedBy="specialite")
+     */
+    private $demandes;
+
     public function __construct()
     {
         $this->prestations = new ArrayCollection();
+        $this->demandes = new ArrayCollection();
     }
 
 
@@ -94,6 +100,33 @@ class PrestationType
             if ($prestation->getType() === $this) {
                 $prestation->setType(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Demande[]
+     */
+    public function getDemandes(): Collection
+    {
+        return $this->demandes;
+    }
+
+    public function addDemande(Demande $demande): self
+    {
+        if (!$this->demandes->contains($demande)) {
+            $this->demandes[] = $demande;
+            $demande->addSpecialite($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDemande(Demande $demande): self
+    {
+        if ($this->demandes->removeElement($demande)) {
+            $demande->removeSpecialite($this);
         }
 
         return $this;

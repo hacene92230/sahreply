@@ -1,12 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TravailleursController!{% endblock %}
+{% block title %}Postuler chez nous {{ parent() }} {% endblock %}
 
 {% block body %}
-{{ form_start(form, {'action': path('prestation_new'), 'method': 'POST'}) }}
+<h2>    On recrute</h2>
+{{ form_start(form, {'action': path('travailleurs_postuler'), 'method': 'POST'}) }}
             {{ form_widget(form) }}
 <button class="btn btn-primary btn-lg js-modal">
-{{ button_label|default('Enregistrer ma demande') }}
+{{ button_label|default('Postuler ma demande') }}
 
 </button>
 {{ form_end(form) }}

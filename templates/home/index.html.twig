@@ -6,8 +6,6 @@
 {% endblock %}
 
 {% block body %}
-	<main>
 <h2>Besoin de nous, réserver le meilleurs prestataire adapter à vos besoins</h2>
-{{ render(controller('App\\Controller\\PrestationController::new')) }}
-</main>
+{{ render(controller('App\\Controller\\Users\\PrestationController::new')) }}
 	{% endblock %}

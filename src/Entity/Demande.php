@@ -26,12 +26,12 @@ class Demande
     private $user;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255000)
      */
     private $cv;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255000)
      */
     private $motivation;
 
@@ -39,6 +39,21 @@ class Demande
      * @ORM\ManyToMany(targetEntity=PrestationType::class, inversedBy="demandes")
      */
     private $specialite;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $permis;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $voiture;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $GPS;
 
     public function __construct()
     {
@@ -106,6 +121,42 @@ class Demande
     public function removeSpecialite(PrestationType $specialite): self
     {
         $this->specialite->removeElement($specialite);
+
+        return $this;
+    }
+
+    public function getPermis(): ?bool
+    {
+        return $this->permis;
+    }
+
+    public function setPermis(bool $permis): self
+    {
+        $this->permis = $permis;
+
+        return $this;
+    }
+
+    public function getVoiture(): ?bool
+    {
+        return $this->voiture;
+    }
+
+    public function setVoiture(bool $voiture): self
+    {
+        $this->voiture = $voiture;
+
+        return $this;
+    }
+
+    public function getGPS(): ?bool
+    {
+        return $this->GPS;
+    }
+
+    public function setGPS(bool $GPS): self
+    {
+        $this->GPS = $GPS;
 
         return $this;
     }

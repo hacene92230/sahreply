@@ -3,9 +3,7 @@
 {% block title %}Modifier mon profil {{ parent() }} {% endblock %}
 
 {% block body %}
-<main>
     <h1>Modifier mon profil</h1>
         <a href="{{ path('home') }}">Accueil</a>
     {{ include('user/_form.html.twig', {'button_label': 'Mettre à jours mon profil'}) }}
-</main>
 {% endblock %}

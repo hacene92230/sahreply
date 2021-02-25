@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Prestataire;
+namespace App\Controller\Travailleurs;
 
 use App\Entity\Prestation;
 use App\Entity\Prestataire;

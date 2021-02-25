@@ -63,7 +63,6 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      */
     private $city;
-
     /**
 
      * @ORM\Column(type="datetime")
@@ -90,11 +89,23 @@ class User implements UserInterface
      */
     private $demande;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $messages;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Message::class, mappedBy="destinataire", orphanRemoval=true)
+     */
+    private $destinataire;
+
     public function __construct()
     {
         $this->prestation = new ArrayCollection();
         $this->prestataires = new ArrayCollection();
         $this->createdAt = new \DateTime();
+        $this->messages = new ArrayCollection();
+        $this->destinataire = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -332,6 +343,66 @@ class User implements UserInterface
         }
 
         $this->demande = $demande;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getMessages(): Collection
+    {
+        return $this->messages;
+    }
+
+    public function addMessage(Message $message): self
+    {
+        if (!$this->messages->contains($message)) {
+            $this->messages[] = $message;
+            $message->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMessage(Message $message): self
+    {
+        if ($this->messages->removeElement($message)) {
+            // set the owning side to null (unless already changed)
+            if ($message->getUser() === $this) {
+                $message->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Message[]
+     */
+    public function getDestinataire(): Collection
+    {
+        return $this->destinataire;
+    }
+
+    public function addDestinataire(Message $destinataire): self
+    {
+        if (!$this->destinataire->contains($destinataire)) {
+            $this->destinataire[] = $destinataire;
+            $destinataire->setDestinataire($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDestinataire(Message $destinataire): self
+    {
+        if ($this->destinataire->removeElement($destinataire)) {
+            // set the owning side to null (unless already changed)
+            if ($destinataire->getDestinataire() === $this) {
+                $destinataire->setDestinataire(null);
+            }
+        }
 
         return $this;
     }

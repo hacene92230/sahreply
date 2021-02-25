@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Rédiger un nouveau Message {{ parent() }} {% endblock %}
+
+{% block body %}
+    <h1>Créer un nouveau message</h1>
+    <a href="{{ path('home') }}">retour à la l'accueil</a>
+    {{ include('message/_form.html.twig') }}
+{% endblock %}

@@ -147,24 +147,21 @@ class ResetPasswordController extends AbstractController
             // If you want to tell the user why a reset email was not sent, uncomment
             // the lines below and change the redirect to 'app_forgot_password_request'.
             // Caution: This may reveal if a user is registered or not.
-            //
-            // $this->addFlash('reset_password_error', sprintf(
-            //     'There was a problem handling your password reset request - %s',
-            //     $e->getReason()
-            // ));
-
+            $this->addFlash('reset_password_error', sprintf(
+                'Un problème est survenu lors du traitement de votre demande de réinitialisation de mot de passe - %s',
+                $e->getReason()
+            ));
             return $this->redirectToRoute('app_check_email');
         }
 
         $email = (new TemplatedEmail())
             ->from(new Address('hacenesahraoui.paris@gmail.com', 'Sahreply'))
             ->to($user->getEmail())
-            ->subject('Your password reset request')
+            ->subject('Votre demande de réinitialisation de mot de passe')
             ->htmlTemplate('reset_password/email.html.twig')
             ->context([
                 'resetToken' => $resetToken,
-            ])
-        ;
+            ]);
 
         $mailer->send($email);
 

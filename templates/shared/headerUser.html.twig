@@ -3,7 +3,7 @@
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
-	{% if app.user.demande.id is not defined and app.user.roles[0] == "ROLE_CLIENT" %}
+	{% if app.user.roles[0] == "ROLE_CLIENT" and app.user.demande is not defined %}
 		<a class="nav-link" href="{{ path('travailleurs_postuler') }}">Rejoindre l'équipe des prestataires</a>
 	{% else %}
 		<p>Une demande pour collaborer avec nous est en cours d'étude.</p>

@@ -55,6 +55,11 @@ class Demande
      */
     private $GPS;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $statut;
+
     public function __construct()
     {
         $this->specialite = new ArrayCollection();
@@ -157,6 +162,18 @@ class Demande
     public function setGPS(bool $GPS): self
     {
         $this->GPS = $GPS;
+
+        return $this;
+    }
+
+    public function getStatut(): ?bool
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(bool $statut): self
+    {
+        $this->statut = $statut;
 
         return $this;
     }

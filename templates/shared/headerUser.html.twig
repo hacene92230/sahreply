@@ -1,13 +1,13 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-	<a class="navbar-brand" href="{{path('home')}}">SAHREPLY</a>
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
-	{% if app.user.roles[0] == "ROLE_CLIENT" and app.user.demande is not defined %}
+	{% if app.user.demande is null %}
 		<a class="nav-link" href="{{ path('travailleurs_postuler') }}">Rejoindre l'équipe des prestataires</a>
+	{% elseif app.user.demande.statut == false %}
+		<p>Attendez encor quelques temps votre demande est en cours détude</p>
 	{% else %}
-		<p>Une demande pour collaborer avec nous est en cours d'étude.</p>
+		<p>Vous êtes
+			{{ app.user.roles[0]|striptags|slice(5)|raw }}!</p>
 	{% endif %}
+
+
 	{% if is_granted('ROLE_PRESTATAIRE') %}
 		<div class="section">
 			<a class="nav-link" href="{{ path('prestataire_arealiser') }}">Mes prestations à réaliser</a>
@@ -18,16 +18,16 @@
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item dropdown">
 				<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					{{ app.user.firstName }}
+					{{ app.user.firstName}}
 				</a>
 				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 					<a class="dropdown-item" href="{{path('user_info', {'id': app.user.id})}}">Consulter mes informations personnelles</a>
 					<a class="dropdown-item" href="{{ path('user_edit', {'id': app.user.id}) }}">Modifier mon profil</a>
 					<a class="dropdown-item" href="{{path('app_logout')}}">Se déconnecter</a>
 					{{ include('user/_delete_form.html.twig') }}
-					</div>
+				</div>
 			</li>
-						<li class="nav-item">
+			<li class="nav-item">
 				<a class="nav-link" href="{{path('message_new')}}">Messagerie</a>
 			</li>
 
@@ -42,4 +42,3 @@
 			</li>
 		</ul>
 	</div>
-</nav>

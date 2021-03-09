@@ -22,16 +22,16 @@ class TravailleursController extends AbstractController
      */
     public function postuler(DemandeRepository $demandeRepo, Request $request): Response
     {
-if($demandeRepo->findOneByUser($this->getUser()) == true)
-        {
-        $this->addFlash('success', 'Une demande nous à déjà été transmise, veuillez patienter durant son traitement.');
-        return $this->redirectToRoute('home');
-    }
+        if (!empty($demandeRepo->findOneByUser($this->getUser()))) {
+            $this->addFlash('success', 'Une demande nous à déjà été transmise, veuillez patienter durant son traitement.');
+            return $this->redirectToRoute('home');
+        }
         $travailleur = new Demande();
         $form = $this->createForm(DemandeTypes::class, $travailleur);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $travailleur->setUser($this->getUser());
+            $travailleur->setStatut(false);
             $this->addFlash('success', 'votre demande nous à bien été transmise, nous reviendrons très vite vers vous.');
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($travailleur);

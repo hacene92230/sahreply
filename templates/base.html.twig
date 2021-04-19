@@ -25,10 +25,11 @@
 		{% include "shared/headerUser.html.twig" %}	
 	{% if is_granted('ROLE_ADMIN') %}
 {% include "shared/headerAdmin.html.twig" %}
+				{% endif %}
 				{% else %}
 {% include "shared/header.html.twig" %}
 						{% endif %}
-						{% endif %}
+						
 </nav>
 		        {% for message in app.flashes('success') %}
 		            <div class="alert alert-success">

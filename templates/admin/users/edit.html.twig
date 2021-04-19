@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier l'utilisateur  {{app.user.firstname }} {{ parent() }} {% endblock %}
+
+{% block body %}
+    <h1>Modifier le profil de {{ app.user.firstname }}</h1>
+        <a href="{{ path('home') }}">Accueil</a>
+    {{ include('admin/users/_form.html.twig', {'button_label': 'Mettre à jours ce profil'}) }}
+{% endblock %}

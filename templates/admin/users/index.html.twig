@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des utilisateurs{% endblock %}
+
+{% block body %}
+    <h1>Liste des utilisateurs</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Prénom</th>
+                <th>Roles</th>
+            
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for user in users %}
+            <tr>
+                                <td>{{ user.firstname }}</td>
+                <td>{{ user.roles ? user.roles[0] }}</td>
+                <td>
+                    <a href="{{ path('admin_users_show', {'id': user.id}) }}">Afficher</a>
+                    <a href="{{ path('admin_users_edit', {'id': user.id}) }}">éditer cet utilisateur</a>
+                    <a href="{{ path('admin_users_delete', {'id': user.id}) }}">Supprimer cet utilisateur</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">Aucun enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+        {{ knp_pagination_render(users) }}
+{% endblock %}

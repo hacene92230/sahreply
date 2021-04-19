@@ -45,9 +45,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
         if ($this->getUser() == $user) {
             if ($form->isSubmitted() && $form->isValid()) {
-                var_dump($request->files);
-                die();
-
                 //Permet de hashé le mot de passe
                 $mdp = $encoder->encodePassword($user, $form->get('plainPassword')->getData());
                 //Envoi le mot de passe hashé                

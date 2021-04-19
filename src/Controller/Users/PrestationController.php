@@ -19,10 +19,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
  */
 class PrestationController extends AbstractController
 {
-    public function __construct(PrestationRepository $prestation, PrestationStatutRepository $Prestationtatut)
+    public function __construct(PrestationRepository $prestation, PrestationStatutRepository $Prestationstatut)
     {
         $this->prestation = $prestation;
-        $this->Prestationtatut = $Prestationtatut;
+        $this->Prestationstatut = $Prestationstatut;
     }
 
     /**
@@ -55,7 +55,7 @@ class PrestationController extends AbstractController
         
             
 
-            //$prestation->setStatut($this->Prestationtatut->findOneById(1));
+            //$prestation->setStatut($this->Prestationstatut->findOneById(1));
             //$prestation->setUser($this->getUser());
             //$entityManager = $this->getDoctrine()->getManager();
             //$entityManager->persist($prestation);
